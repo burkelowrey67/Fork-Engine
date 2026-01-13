@@ -1,20 +1,9 @@
 #include <position/bit_board.h>
 #include <bit>
 
-namespace position::bit_board {
+namespace chess::bit_board {
 
-	void remove_redundant_edge_bits(uint64_t& bitBoard, unsigned int currentSquare, piece::PieceType pieceType) {
-		if (pieceType == piece::PieceType::Rook) {
-			if ((currentSquare & FIRST_RANK) != 0) bitBoard &= ~(EIGHTH_RANK | SW_CORNER | SE_CORNER);
-			if ((currentSquare & EIGHTH_RANK) != 0) bitBoard &= ~(FIRST_RANK | NW_CORNER | NE_CORNER);
-			if ((currentSquare & A_FILE) != 0) bitBoard &= ~(H_FILE | NW_CORNER | SW_CORNER);
-			if ((currentSquare & H_FILE) != 0) bitBoard &= ~(A_FILE | NE_CORNER | SE_CORNER);
-		}
 
-		else {
-			bitBoard ^= EDGE_MASK;
-		}
-	}
 
 	uint64_t square_to_bit_board(unsigned int squareIndex) {
 		return squareIndex < 64
@@ -22,7 +11,7 @@ namespace position::bit_board {
 			: 0ULL;
 	}
 
-	unsigned int get_first_square_index(uint64_t& bitBoard) {
+	int get_first_square_index(uint64_t& bitBoard) {
 		return std::countr_zero(bitBoard);
 	}
 
@@ -49,7 +38,7 @@ namespace position::bit_board {
 		bitBoard &= ~square_to_bit_board(squareIndex);
 	}
 
-	void remove_first_bit(uint64_t& bitBoard) {
+	void remove_first_one(uint64_t& bitBoard) {
 		bitBoard &= bitBoard - 1;
 	}
 }

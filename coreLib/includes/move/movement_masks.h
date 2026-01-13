@@ -155,6 +155,12 @@ namespace move::masks {
         0,0,0,0,0,0,0,0,
     };
     
+    /*
+    * @brief Returns a movement mask assuming an empty board. Note: Returns zero if a pawn.
+    * @param pieceType:     Type of piece specifying mask.
+    * @param squareIndex:   Index of square in a bit board [0, 63].
+    * @return movement mask
+    */
     constexpr inline uint64_t get_mask(piece::PieceType pieceType, unsigned int squareIndex) {
         if (pieceType == piece::PieceType::Pawn) return 0;
 
@@ -169,6 +175,14 @@ namespace move::masks {
         }
     }
 
+
+    /*
+    * @brief Returns a pawn movement mask assuming an empty board.
+    * @param color:         Color of pawns.
+    * @param squareIndex:   Index of square in a bit board [0, 63].
+    * @param attacking:     True if the pawn is attacking.
+    * @return movement mask
+    */
     constexpr inline uint64_t get_pawn_mask(chess::Color color, unsigned int squareIndex, bool attacking) {
         switch (color)
         {

@@ -7,7 +7,7 @@ namespace move::move_application {
 
 
 
-	static void apply_castle(position::Position& position, uint32_t& move) {
+	static void apply_castle(chess::Position& position, uint32_t& move) {
 
 		unsigned int kingStartIndex;
 		unsigned int kingEndIndex;
@@ -17,82 +17,82 @@ namespace move::move_application {
 		switch (position.toMove)
 		{
 		case chess::Color::White:
-			kingStartIndex =	position::bit_board::DEFAULT_W_KING_INDEX;
-			kingEndIndex =		position::bit_board::POST_W_Q_CASTLE_KING_INDEX;
-			rookStartIndex =	position::bit_board::PRE_W_Q_CASTLE_ROOK_INDEX;
-			rookEndIndex =		position::bit_board::POST_W_Q_CASTLE_ROOK_INDEX;
+			kingStartIndex =	chess::bit_board::DEFAULT_W_KING_INDEX;
+			kingEndIndex =		chess::bit_board::POST_W_Q_CASTLE_KING_INDEX;
+			rookStartIndex =	chess::bit_board::PRE_W_Q_CASTLE_ROOK_INDEX;
+			rookEndIndex =		chess::bit_board::POST_W_Q_CASTLE_ROOK_INDEX;
 			break;
 		case chess::Color::Black:
-			kingStartIndex =	position::bit_board::DEFAULT_B_KING_INDEX;
-			kingEndIndex =		position::bit_board::POST_B_Q_CASTLE_KING_INDEX;
-			rookStartIndex =	position::bit_board::PRE_B_Q_CASTLE_ROOK_INDEX;
-			rookEndIndex =		position::bit_board::POST_B_Q_CASTLE_ROOK_INDEX;
+			kingStartIndex =	chess::bit_board::DEFAULT_B_KING_INDEX;
+			kingEndIndex =		chess::bit_board::POST_B_Q_CASTLE_KING_INDEX;
+			rookStartIndex =	chess::bit_board::PRE_B_Q_CASTLE_ROOK_INDEX;
+			rookEndIndex =		chess::bit_board::POST_B_Q_CASTLE_ROOK_INDEX;
 			break;
 		default: kingStartIndex = 0; kingEndIndex = 0; rookStartIndex = 0; rookEndIndex = 0;
 		}
 
-		position::bit_board::move_bit(position.get_friendly_king_bit_board_ref(), kingStartIndex, kingEndIndex);
-		position::bit_board::move_bit(position.get_friendly_rook_bit_board_ref(), rookStartIndex, rookEndIndex);
+		chess::bit_board::move_bit(position.get_friendly_king_bit_board_ref(), kingStartIndex, kingEndIndex);
+		chess::bit_board::move_bit(position.get_friendly_rook_bit_board_ref(), rookStartIndex, rookEndIndex);
 	}
 
-	static void apply_en_passant(position::Position& position, uint32_t& move) {
-		position::bit_board::set_bit_zero(
+	static void apply_en_passant(chess::Position& position, uint32_t& move) {
+		chess::bit_board::set_bit_zero(
 			position.bitBoards[position.pieceIndexAtSquare[position.enPassantSquare]], 
 			position.enPassantSquare
 		);
 
-		position::bit_board::move_bit(
+		chess::bit_board::move_bit(
 			position.bitBoards[piece::colored_index(position.toMove, move::decode::piece_type(move))],
 			move::decode::start_square(move),
 			move::decode::end_square(move)
 		);
 	}
 
-	static void apply_promotion(position::Position& position, uint32_t& move) {
-		position::bit_board::set_bit_zero(
+	static void apply_promotion(chess::Position& position, uint32_t& move) {
+		chess::bit_board::set_bit_zero(
 			position.bitBoards[piece::colored_index(position.toMove, move::decode::piece_type(move))],
 			move::decode::start_square(move)
 		);
 
-		position::bit_board::set_bit_one(
+		chess::bit_board::set_bit_one(
 			position.bitBoards[piece::colored_index(position.toMove, move::decode::promotion_type(move))],
 			move::decode::end_square(move)
 		);
 
 		if (move::decode::captured_type(move) != piece::PieceType::None) {
-			position::bit_board::set_bit_zero(
+			chess::bit_board::set_bit_zero(
 				position.bitBoards[piece::colored_index(position.toMove, move::decode::captured_type(move))],
 				move::decode::end_square(move)
 			);
 		}
 	}
 
-	static void apply_normal_move(position::Position& position, uint32_t& move) {
-		position::bit_board::move_bit(
+	static void apply_normal_move(chess::Position& position, uint32_t& move) {
+		chess::bit_board::move_bit(
 			position.get_bit_board_ref(move::decode::piece_type(move), position.toMove),
 			move::decode::start_square(move),
 			move::decode::end_square(move)
 		);
 
 		if (move::decode::captured_type(move) != piece::PieceType::None) {
-			position::bit_board::set_bit_zero(
+			chess::bit_board::set_bit_zero(
 				position.bitBoards[piece::colored_index(position.toMove, move::decode::captured_type(move))],
 				move::decode::end_square(move)
 			);
 		}
 	}
 
-	position::Position get_next(position::Position& position, move::Move& move) {
-		position::Position copy = position::Position(position);
+	chess::Position get_next(chess::Position position, move::Move& move) {
+		chess::Position copy = chess::Position(position);
 		apply_move(copy, move);
 		return copy;
 	}
 
-	void apply_move(position::Position& position, move::Move& move) {
+	void apply_move(chess::Position& position, move::Move& move) {
 		apply_move(position, move.encodedMove);
 	}
 
-	void apply_move(position::Position& position, uint32_t& move) {
+	void apply_move(chess::Position& position, uint32_t& move) {
 
 		if (move::decode::castle_type(move) != move::CastleType::None) {
 			apply_castle(position, move);

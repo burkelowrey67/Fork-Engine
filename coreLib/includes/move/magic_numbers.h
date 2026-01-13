@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <move/magic_numbers.h>
+#include <vector>
 
 namespace move::magic_numbers {
 
@@ -64,6 +65,14 @@ namespace move::magic_numbers {
         50, 51, 51, 51, 51, 51, 51, 50,
     };
 
+    /*
+    * @brief Computes the index of a look-up given the blocker configuration. 
+    * Note: Bit board - LSB = A1, MSB = H8.
+    * @param blockerConfig: Bit board of all pieces in the path of the piece.
+    * @param squareIndex:   Index of a square in a bit board [0, 63].
+    * @param pieceType:     Type of the piece specifying the look-up.
+    * @return look-up index
+    */
     inline int get_lookup_index(uint64_t blockerConfig, int squareIndex, piece::PieceType pieceType) {
         switch (pieceType)
         {

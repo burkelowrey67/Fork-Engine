@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <piece/piece_type.h>
 
-namespace position::bit_board {
+namespace chess::bit_board {
 
     inline constexpr uint64_t EDGE_MASK = 0xFF818181818181FF;
 
@@ -44,37 +44,66 @@ namespace position::bit_board {
     inline constexpr uint64_t DEFAULT_B_KING =  0x1000000000000000;
     inline constexpr uint64_t DEFAULT_B_QUEEN = 0x0800000000000000;
 
-    inline constexpr unsigned int DEFAULT_W_KING_INDEX = 4;
-    inline constexpr unsigned int DEFAULT_W_QUEEN_INDEX = 3;
-    inline constexpr unsigned int DEFAULT_B_KING_INDEX = 60;
-    inline constexpr unsigned int DEFAULT_B_QUEEN_INDEX = 59;
+    inline constexpr int DEFAULT_W_KING_INDEX = 4;
+    inline constexpr int DEFAULT_W_QUEEN_INDEX = 3;
+    inline constexpr int DEFAULT_B_KING_INDEX = 60;
+    inline constexpr int DEFAULT_B_QUEEN_INDEX = 59;
     
-    inline constexpr unsigned int PRE_W_K_CASTLE_ROOK_INDEX = 7;
-    inline constexpr unsigned int PRE_W_Q_CASTLE_ROOK_INDEX = 0;
-    inline constexpr unsigned int PRE_B_K_CASTLE_ROOK_INDEX = 63;
-    inline constexpr unsigned int PRE_B_Q_CASTLE_ROOK_INDEX = 56;
+    inline constexpr int PRE_W_K_CASTLE_ROOK_INDEX = 7;
+    inline constexpr int PRE_W_Q_CASTLE_ROOK_INDEX = 0;
+    inline constexpr int PRE_B_K_CASTLE_ROOK_INDEX = 63;
+    inline constexpr int PRE_B_Q_CASTLE_ROOK_INDEX = 56;
 
-    inline constexpr unsigned int POST_W_K_CASTLE_KING_INDEX = 6;
-    inline constexpr unsigned int POST_W_Q_CASTLE_KING_INDEX = 2;
-    inline constexpr unsigned int POST_B_K_CASTLE_KING_INDEX = 62;
-    inline constexpr unsigned int POST_B_Q_CASTLE_KING_INDEX = 58;
+    inline constexpr int POST_W_K_CASTLE_KING_INDEX = 6;
+    inline constexpr int POST_W_Q_CASTLE_KING_INDEX = 2;
+    inline constexpr int POST_B_K_CASTLE_KING_INDEX = 62;
+    inline constexpr int POST_B_Q_CASTLE_KING_INDEX = 58;
 
-    inline constexpr unsigned int POST_W_K_CASTLE_ROOK_INDEX = 5;
-    inline constexpr unsigned int POST_W_Q_CASTLE_ROOK_INDEX = 3;
-    inline constexpr unsigned int POST_B_K_CASTLE_ROOK_INDEX = 61;
+    inline constexpr int POST_W_K_CASTLE_ROOK_INDEX = 5;
+    inline constexpr int POST_W_Q_CASTLE_ROOK_INDEX = 3;
+    inline constexpr int POST_B_K_CASTLE_ROOK_INDEX = 61;
 
-    inline constexpr unsigned int POST_B_Q_CASTLE_ROOK_INDEX = 59;
+    inline constexpr int POST_B_Q_CASTLE_ROOK_INDEX = 59;
 
-    inline constexpr uint64_t DEFAULT_POSITION[12] = {
-        SECOND_RANK, 0x0000000000000042, 0x0000000000000024, 0x0000000000000081, DEFAULT_W_QUEEN, DEFAULT_W_KING,
-        SEVENTH_RANK, 0x4200000000000000, 0x2400000000000000, 0x8100000000000000, DEFAULT_B_QUEEN, DEFAULT_B_KING
-    };
-
-	void remove_redundant_edge_bits(uint64_t& bitBoard, unsigned int squareIndex, piece::PieceType);
+    /*
+    * @brief Converts a square index into a bit board.
+    * @param squareIndex: Index of square in bit board [0, 63].
+    * @return bit board
+    */
     uint64_t square_to_bit_board(unsigned int squareIndex);
-    unsigned int get_first_square_index(uint64_t& bitBoard);
+
+    /*
+    * @brief Gets the index of the least significant 1 in a bit board. Note: Returns -1 if the bit board = 0.
+    * @param bitBoard: An unsigned long represention of each instance of a piece types's location, where LSB = A1, MSB = H8.
+    * @return square index
+    */
+    int get_first_square_index(uint64_t& bitBoard);
+
+    /*
+    * @brief Moves a bit from one square index in a bit board to another.
+    * @param bitBoard:      An unsigned long represention of each instance of a piece types's location, where LSB = A1, MSB = H8.
+    * @param startSquare:   Index of bit to flip.
+    * @param endSquare:     Index of bit to assign startSquare's value.
+    */
     void move_bit(uint64_t& bitBoard, unsigned int startSquare, unsigned int endSquare);
+
+    /*
+    * @brief Sets the bit of a square index in a bit board to 1.
+    * @param bitBoard:      An unsigned long represention of each instance of a piece types's location, where LSB = A1, MSB = H8.
+    * @param squareIndex:   Index of bit to set.
+    */
     void set_bit_one(uint64_t& bitBoard, unsigned int squareIndex);
+
+    /*
+    * @brief Sets the bit of a square index in a bit board to 0.
+    * @param bitBoard:      An unsigned long represention of each instance of a piece types's location, where LSB = A1, MSB = H8.
+    * @param squareIndex:   Index of bit to set.
+    */
     void set_bit_zero(uint64_t& bitBoard, unsigned int squareIndex);
-    void remove_first_bit(uint64_t& bitBoard);
+
+    /*
+    * @brief Removes the least significant 1 in a bit board.
+    * @param bitBoard: An unsigned long represention of each instance of a piece types's location, where LSB = A1, MSB = H8.
+    */
+    void remove_first_one(uint64_t& bitBoard);
 }

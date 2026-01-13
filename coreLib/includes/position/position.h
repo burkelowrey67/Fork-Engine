@@ -3,9 +3,10 @@
 #include <color.h>
 #include <piece/piece_type.h>
 
-namespace position {
+namespace chess {
 
 	class Position {
+
 	public:
 
 		uint64_t (&bitBoards)[12];
@@ -88,6 +89,13 @@ namespace position {
 		int num_rooks(chess::Color);
 		int num_queens(chess::Color);
 		int num_pieces(piece::PieceType, chess::Color);
+
+		int piece_diff();
+		int pawn_diff();
+		int knight_diff();
+		int bishop_diff();
+		int rook_diff();
+		int queen_diff();
 
 		bool is_king_attacked();
 		bool is_king_attacked(chess::Color);

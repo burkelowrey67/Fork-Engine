@@ -8,7 +8,7 @@ namespace move::generation {
 	// generate moves from hash_table that maps "best" moves to previously searched positions.
 	// implement later
 
-	static void generate_king_side_castle(position::Position& position, std::vector<uint32_t>& moves) {
+	static void generate_king_side_castle(chess::Position& position, std::vector<uint32_t>& moves) {
 
 		if (
 			(position.toMove == chess::Color::White && !position.w_kingSideCastle) ||
@@ -22,7 +22,7 @@ namespace move::generation {
 		moves.push_back(Move::of(move::CastleType::KingSide));
 	}
 
-	static void generate_queen_side_castle(position::Position& position, std::vector<uint32_t>& moves) {
+	static void generate_queen_side_castle(chess::Position& position, std::vector<uint32_t>& moves) {
 
 		if (
 			(position.toMove == chess::Color::White && !position.w_queenSideCastle) ||
@@ -38,20 +38,20 @@ namespace move::generation {
 
 	// Generates moves from a movement, given a piece type and a start square. 
 	// Assumes non-pawn piece types.
-	static void generate_moves_from_movement_mask(uint64_t movementMask, piece::PieceType pieceType, unsigned int startSquare, position::Position& position, std::vector<uint32_t>& moves) {
+	static void generate_moves_from_movement_mask(uint64_t movementMask, piece::PieceType pieceType, unsigned int startSquare, chess::Position& position, std::vector<uint32_t>& moves) {
 		if (pieceType == piece::PieceType::Pawn) return;
 
 		while (movementMask) {
-			int endSquare = position::bit_board::get_first_square_index(movementMask);
+			int endSquare = chess::bit_board::get_first_square_index(movementMask);
 			piece::PieceType pieceAtEndSquare = static_cast<piece::PieceType>(position.pieceIndexAtSquare[endSquare]);
 			moves.push_back(Move::of(startSquare, endSquare, pieceType, pieceAtEndSquare));
-			position::bit_board::remove_first_bit(movementMask);
+			chess::bit_board::remove_first_one(movementMask);
 		}
 	}
 
-	static void generate_pawn_moves_from_movement_mask(uint64_t& mask, unsigned int startSquare, position::Position& position, std::vector<uint32_t>& moves, bool attacking) {
+	static void generate_pawn_moves_from_movement_mask(uint64_t& mask, unsigned int startSquare, chess::Position& position, std::vector<uint32_t>& moves, bool attacking) {
 		while (mask) {
-			unsigned int endSquare = position::bit_board::get_first_square_index(mask);
+			unsigned int endSquare = chess::bit_board::get_first_square_index(mask);
 
 			piece::PieceType capturedType = piece::PieceType::None;
 
@@ -62,7 +62,7 @@ namespace move::generation {
 				capturedType = static_cast<piece::PieceType>(pieceIndex);
 			}
 
-			if ((position::bit_board::EIGHTH_RANK & position::bit_board::square_to_bit_board(endSquare)) != 0) {
+			if ((chess::bit_board::EIGHTH_RANK & chess::bit_board::square_to_bit_board(endSquare)) != 0) {
 				for (int p = 0; static_cast<int>(piece::PieceType::N); p++) {
 					moves.push_back(move::Move::of(startSquare, endSquare, capturedType, static_cast<piece::PieceType>(p), false));
 					continue;
@@ -85,36 +85,35 @@ namespace move::generation {
 		}
 	}
 
-	static void generate_pawn_moves(position::Position& position, std::vector<uint32_t>& moves) {
+	static void generate_pawn_moves(chess::Position& position, std::vector<uint32_t>& moves) {
 		uint64_t pawns = position.bitBoards[piece::pawn_index(position.toMove)];
 
 		while (pawns) {
-			int squareIndex = position::bit_board::get_first_square_index(pawns);
+			int squareIndex = chess::bit_board::get_first_square_index(pawns);
 			uint64_t mask = move::masks::get_pawn_mask(position.toMove, squareIndex, false);
 			generate_moves_from_movement_mask(mask, piece::PieceType::Pawn, squareIndex, position, moves);
 
 			mask = move::masks::get_pawn_mask(position.toMove, squareIndex, true); 
 			mask &= position.enemyPieces;
 			generate_moves_from_movement_mask(mask, piece::PieceType::Pawn, squareIndex, position, moves);
-			position::bit_board::remove_first_bit(pawns);
+			chess::bit_board::remove_first_one(pawns);
 		}
 	}
 
 
-	static void generate_piece_moves(piece::PieceType pieceType, position::Position& position, std::vector<uint32_t>& moves) {
+	static void generate_piece_moves(piece::PieceType pieceType, chess::Position& position, std::vector<uint32_t>& moves) {
 		if (pieceType == piece::PieceType::Pawn) return;
 		uint64_t pieces = position.bitBoards[piece::colored_index(position.toMove, pieceType)];
 
 		while (pieces) {
-			int squareIndex = position::bit_board::get_first_square_index(pieces);
+			int squareIndex = chess::bit_board::get_first_square_index(pieces);
 			uint64_t mask = move::lookups::lookup(pieceType, squareIndex, position.allPieces);
 			generate_moves_from_movement_mask(mask, pieceType, squareIndex, position, moves);
-			position::bit_board::remove_first_bit(pieces);
+			chess::bit_board::remove_first_one(pieces);
 		}
 	}
 
-	// Given a position and a move list, it generates psuedo-legal moves and appends them to the list. Does not check for position-legality.
-	void generate_pseudo_legal_moves(position::Position& position, std::vector<uint32_t>& moves) {
+	void generate_pseudolegal_moves(chess::Position& position, std::vector<uint32_t>& moves) {
 		generate_pawn_moves(position, moves);
 		generate_king_side_castle(position, moves);
 		generate_queen_side_castle(position, moves);

@@ -7,7 +7,7 @@
 #include <position/bit_board.h>
 #include <move/movement_masks.h>
 
-namespace position {
+namespace chess {
 
 	Position::Position(
 		uint64_t (&_bitBoards)[12],
@@ -268,6 +268,30 @@ namespace position {
 		}
 	}
 
+	int Position::piece_diff() {
+		return piece_count(chess::Color::White) - piece_count(chess::Color::Black);
+	}
+
+	int Position::pawn_diff() {
+		return num_pawns(chess::Color::White) - num_pawns(chess::Color::Black);
+	}
+
+	int Position::knight_diff() {
+		return num_knights(chess::Color::White) - num_knights(chess::Color::Black);
+	}
+
+	int Position::bishop_diff() {
+		return num_bishops(chess::Color::White) - num_bishops(chess::Color::Black);
+	}
+
+	int Position::rook_diff() {
+		return num_rooks(chess::Color::White) - num_rooks(chess::Color::Black);
+	}
+
+	int Position::queen_diff() {
+		return num_queens(chess::Color::White) - num_queens(chess::Color::Black);
+	}
+
 	bool Position::is_king_attacked() {
 		return Position::is_king_attacked(toMove);
 	}
@@ -279,13 +303,13 @@ namespace position {
 
 	bool Position::is_square_attacked(unsigned int squareIndex, chess::Color attacking) {
 		int lowBound = piece::colored_index(attacking, piece::PieceType::Pawn);
-		uint64_t squareIndexMap = position::bit_board::square_to_bit_board(squareIndex);
+		uint64_t squareIndexMap = chess::bit_board::square_to_bit_board(squareIndex);
 
 		for (int piece = lowBound; piece < lowBound + 6; piece++) {
 			uint64_t attackingPieces = bitBoards[piece];
 
 			while (attackingPieces) {
-				int currentIndex = position::bit_board::get_first_square_index(attackingPieces);
+				int currentIndex = chess::bit_board::get_first_square_index(attackingPieces);
 				piece::PieceType pieceType = static_cast<piece::PieceType>(piece);
 
 				uint64_t attackingMask;
@@ -300,7 +324,7 @@ namespace position {
 					return true;
 				}
 				
-				position::bit_board::remove_first_bit(attackingPieces);
+				chess::bit_board::remove_first_one(attackingPieces);
 			}
 		}
 

@@ -32,7 +32,7 @@ namespace move::lookup {
 		while (movementMask) {
 			int index = std::countr_zero(movementMask);
 			moveSquareIndices.push_back(index);
-			position::bit_board::remove_first_bit(movementMask);
+			chess::bit_board::remove_first_one(movementMask);
 		}
 
 		int numConfigs = 1 << numSquareIndices;
@@ -53,6 +53,46 @@ namespace move::lookup {
 		return blockerConfigs;
 	}
 
+	static void remove_redundant_edge_bits(uint64_t& bitBoard, unsigned int currentSquare, piece::PieceType pieceType) {
+		if (pieceType == piece::PieceType::Rook) {
+			if ((currentSquare & chess::bit_board::FIRST_RANK) != 0) {
+				bitBoard &= ~(
+					chess::bit_board::EIGHTH_RANK	| 
+					chess::bit_board::SW_CORNER		| 
+					chess::bit_board::SE_CORNER
+					);
+			}
+
+			if ((currentSquare & chess::bit_board::EIGHTH_RANK) != 0) {
+				bitBoard &= ~(
+					chess::bit_board::FIRST_RANK	| 
+					chess::bit_board::NW_CORNER		| 
+					chess::bit_board::NE_CORNER
+					);
+			}
+
+			if ((currentSquare & chess::bit_board::A_FILE) != 0) {
+				bitBoard &= ~(
+					chess::bit_board::H_FILE		|
+					chess::bit_board::NW_CORNER		|
+					chess::bit_board::SW_CORNER
+					);
+			}
+
+			if ((currentSquare & chess::bit_board::H_FILE) != 0) {
+				bitBoard &= ~(
+					chess::bit_board::A_FILE		| 
+					chess::bit_board::NE_CORNER		| 
+					chess::bit_board::SE_CORNER
+					);
+			}
+		}
+
+		else {
+			bitBoard ^= chess::bit_board::EDGE_MASK;
+		}
+	}
+
 	template
 	<size_t N>
 	static void initialize_lookup(piece::PieceType pieceType, uint64_t(&lookup)[64][N]) {
@@ -63,8 +103,8 @@ namespace move::lookup {
 				movementMask = move::masks::get_mask(pieceType, squareIndex);
 			}
 			else return;
-				
-			position::bit_board::remove_redundant_edge_bits(movementMask, squareIndex, pieceType);
+
+			remove_redundant_edge_bits(movementMask, squareIndex, pieceType);
 			int hashBucketSize = pieceType == piece::PieceType::Bishop ? 512 : 4096;
 			if (hashBucketSize != N) return;
 
