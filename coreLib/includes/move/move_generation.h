@@ -4,7 +4,7 @@
 #include <position/position.h>
 #include <vector>
 
-namespace move::generation {
+namespace move {
 
 	/*
 	* @brief Given a position and a move list, it generates psuedo-legal moves and appends them to the list. 

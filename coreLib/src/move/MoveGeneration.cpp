@@ -3,7 +3,7 @@
 #include <move/movement_masks.h>
 #include <vector>
 
-namespace move::generation {
+namespace move {
 	
 	// generate moves from hash_table that maps "best" moves to previously searched positions.
 	// implement later
@@ -90,10 +90,10 @@ namespace move::generation {
 
 		while (pawns) {
 			int squareIndex = chess::bit_board::get_first_square_index(pawns);
-			uint64_t mask = move::masks::get_pawn_mask(position.toMove, squareIndex, false);
+			uint64_t mask = move::mask::get_pawn_mask(position.toMove, squareIndex, false);
 			generate_moves_from_movement_mask(mask, piece::PieceType::Pawn, squareIndex, position, moves);
 
-			mask = move::masks::get_pawn_mask(position.toMove, squareIndex, true); 
+			mask = move::mask::get_pawn_mask(position.toMove, squareIndex, true); 
 			mask &= position.enemyPieces;
 			generate_moves_from_movement_mask(mask, piece::PieceType::Pawn, squareIndex, position, moves);
 			chess::bit_board::remove_first_one(pawns);
@@ -107,7 +107,7 @@ namespace move::generation {
 
 		while (pieces) {
 			int squareIndex = chess::bit_board::get_first_square_index(pieces);
-			uint64_t mask = move::lookups::lookup(pieceType, squareIndex, position.allPieces);
+			uint64_t mask = move::mask::lookup(pieceType, squareIndex, position.allPieces);
 			generate_moves_from_movement_mask(mask, pieceType, squareIndex, position, moves);
 			chess::bit_board::remove_first_one(pieces);
 		}

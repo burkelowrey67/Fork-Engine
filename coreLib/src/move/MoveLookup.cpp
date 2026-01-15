@@ -5,20 +5,20 @@
 #include <bit>
 #include <vector>
 
-namespace move::lookups {
+namespace move::mask {
 
 	static uint64_t bishopLookups[64][512];
 	static uint64_t rookLookups[64][4096];
 
 	uint64_t lookup(piece::PieceType pieceType, unsigned int squareIndex, uint64_t allPieces) {
 		switch (pieceType) {
-		case piece::PieceType::Knight:  return move::masks::KNIGHT_MASKS[squareIndex];
-		case piece::PieceType::Bishop:  return bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::masks::BISHOP_MASKS[squareIndex], squareIndex, pieceType)];
-		case piece::PieceType::Rook:    return rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::masks::ROOK_MASKS[squareIndex], squareIndex, pieceType)];
+		case piece::PieceType::Knight:  return move::mask::KNIGHT_MASKS[squareIndex];
+		case piece::PieceType::Bishop:  return bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)];
+		case piece::PieceType::Rook:    return rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::ROOK_MASKS[squareIndex], squareIndex, pieceType)];
 		case piece::PieceType::Queen:
-			return  bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::masks::BISHOP_MASKS[squareIndex], squareIndex, pieceType)] |
-					rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::masks::BISHOP_MASKS[squareIndex], squareIndex, pieceType)];
-		case piece::PieceType::King:    return move::masks::KING_MASKS[squareIndex];
+			return  bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)] |
+					rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)];
+		case piece::PieceType::King:    return move::mask::KING_MASKS[squareIndex];
 		default: return 0;
 		}
 	}
@@ -100,7 +100,7 @@ namespace move::lookups {
 			uint64_t movementMask;
 
 			if (pieceType == piece::PieceType::Bishop || pieceType == piece::PieceType::Rook) {
-				movementMask = move::masks::get_mask(pieceType, squareIndex);
+				movementMask = move::mask::get_mask(pieceType, squareIndex);
 			}
 			else return;
 
@@ -112,7 +112,7 @@ namespace move::lookups {
 
 			for (uint64_t blockerConfig : blockerConfigs) {
 				int lookupIndex = move::magic_numbers::get_lookup_index(blockerConfig, squareIndex, pieceType);
-				lookup[squareIndex][lookupIndex] = move::masks::get_mask(pieceType, squareIndex);
+				lookup[squareIndex][lookupIndex] = move::mask::get_mask(pieceType, squareIndex);
 			}
 		}
 	}

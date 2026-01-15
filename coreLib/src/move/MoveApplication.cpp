@@ -3,9 +3,7 @@
 #include <color.h>
 #include <move/move_decode.h>
 
-namespace move::move_application {
-
-
+namespace move {
 
 	static void apply_castle(chess::Position& position, uint32_t& move) {
 

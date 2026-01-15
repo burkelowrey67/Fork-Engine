@@ -3,7 +3,7 @@
 #include <position/position.h>
 #include <move/move.h>
 
-namespace move::move_application {
+namespace move {
 
 	/*
 	* @brief Returns a position copy with the applied move.

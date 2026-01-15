@@ -314,10 +314,10 @@ namespace chess {
 				uint64_t attackingMask;
 
 				if (pieceType == piece::PieceType::Pawn) {
-					attackingMask = move::masks::get_pawn_mask(toMove, currentIndex, true);
+					attackingMask = move::mask::get_pawn_mask(toMove, currentIndex, true);
 				}
 
-				else attackingMask = move::lookups::lookup(pieceType, currentIndex, allPieces);
+				else attackingMask = move::mask::lookup(pieceType, currentIndex, allPieces);
 
 				if ((squareIndexMap & attackingMask)) {
 					return true;

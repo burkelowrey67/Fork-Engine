@@ -8,7 +8,7 @@
 #include <move/magic_numbers.h>
 #include <move/move_lookup.h>
 
-namespace move::masks {
+namespace move::mask {
 
     // Update masks and test AI generated masks.
 

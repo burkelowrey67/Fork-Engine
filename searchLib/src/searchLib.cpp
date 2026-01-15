@@ -16,13 +16,13 @@ namespace move {
 		std::vector<uint32_t> moves;
 		moves.reserve(256);
 
-		move::generation::generate_pseudolegal_moves(position, moves);
+		move::generate_pseudolegal_moves(position, moves);
 		
 		move::Move bestMove;
 		double bestScore = DBL_MIN;
 
 		for (move::Move move : moves) {
-			chess::Position nextPosition = move::move_application::next_position(position, move);
+			chess::Position nextPosition = move::next_position(position, move);
 			double score = position::evaluation::eval(nextPosition);
 			if (score > bestScore) bestMove = move; bestScore = score;
 		}

@@ -3,7 +3,7 @@
 #include <piece/piece_type.h>
 #include <move/movement_masks.h>
 
-namespace move::lookups {
+namespace move::mask {
 
 	/*
 	* @brief initializes the look-up with computed bit boards.
