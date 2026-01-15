@@ -2,7 +2,7 @@
 #include <position/position.h>
 #include <cmath>
 
-namespace evaluation {
+namespace position::evaluation {
 
 	constexpr double pawnValue = 1;
 	constexpr double knightValue = 3;
@@ -11,5 +11,11 @@ namespace evaluation {
 	constexpr double queenValue = 9;
 	constexpr double kingValue = INT32_MAX;
 
-	double eval(chess::Position position);
+	/*
+	* @brief Returns a double representing the strength of the position for the white player.
+	* Higher values are better, and zero represents an equal position.
+	* @param position: Chess position.
+	* @return double
+	*/
+	double eval(chess::Position& position);
 }

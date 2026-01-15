@@ -30,3 +30,131 @@
 *.exe
 *.out
 *.app
+.vs/Chess Engine/FileContentIndex/09c84c72-1fd1-4c3e-9aaf-55fa09979528.vsidx
+.vs/Chess Engine/FileContentIndex/8c21121a-69aa-47f2-82e6-9986f7c8ef90.vsidx
+.vs/Chess Engine/FileContentIndex/c5e7c767-f2b8-48ef-b167-3f1c1125862e.vsidx
+.vs/Chess Engine/FileContentIndex/f1213758-d704-491a-b740-7285d80fe941.vsidx
+.vs/Chess Engine/FileContentIndex/read.lock
+.vs/Chess Engine/v17/.suo
+.vs/Chess Engine/v17/Browse.VC.db
+.vs/Chess Engine/v17/ipch/4bbae4fb9a2d78e0.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/1c124c71cf711f01/ENGINE.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/387c13192b2305c5/APPLICATION.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/525b5466bebcc45d/MOVEMENTMASKS.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/574c5c454d366e7c/VECTOR2.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/69daa89de129a007/MOVEAPPLICATION.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/70691260e66f5f28/POSITION.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/7c09aa126e4ebddf/MOVE.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/88faf53845a32a0e/MOVELIST.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/93c7377e1e47aac4/MOVEGENERATION.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/abc84e6125c5c4fa/MOVE.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/adb78d5cfadf2918/MAGICNUMBERS.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/c0c6986d6b21112c/MOVEMENT_MAKS.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/c7cc9cd1ae54e61f/MOVE_GENERATION.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/dc4eb2a21837401e/MOVE_APPLICATION.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/e98fd08469571d50/MOVE_LIST.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/ed989c2ab883af6a/MAIN.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/f73caa2d8403b129/POSITION.ipch
+.vs/Chess Engine/v17/ipch/AutoPCH/fb87ed27ce451cc2/MOVE_GENERATION.ipch
+.vs/Fork Engine/FileContentIndex/0a070e0b-839c-4934-b430-0f41bff79d82.vsidx
+.vs/Fork Engine/FileContentIndex/2ef6be9b-11af-41e6-942b-a00756d077bc.vsidx
+.vs/Fork Engine/FileContentIndex/48857922-1c2f-4c25-be1d-70a0061ac7ce.vsidx
+.vs/Fork Engine/FileContentIndex/bec1f246-9f38-4af6-ad34-9445f28bbccc.vsidx
+.vs/Fork Engine/FileContentIndex/db93c867-f5af-4795-9ef6-338fc4352a6d.vsidx
+.vs/Fork Engine/v17/.suo
+.vs/Fork Engine/v17/Browse.VC.db
+.vs/Fork Engine/v17/DocumentLayout.backup.json
+.vs/Fork Engine/v17/DocumentLayout.json
+.vs/Fork Engine/v17/ipch/4adda47148724912.ipch
+.vs/Fork Engine/v17/ipch/4d7f66f5c04fb8ec.ipch
+.vs/Fork Engine/v17/ipch/86b2c37ae5d0436a.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/15740dbc02fddd2f/MAGIC_BIT_BOARDS.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/2644dab5461b8a82/VCTMP9644_293674.MOVEGENERATION.00000000.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/2f5f57d21501747d/MOVELOOKUP.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/3c77e88f01ca581d/BITBOARD.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/52a5ee561e9cd1c2/PIECE_UTIL.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/57bfe356757afc72/VECTOR2.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/580cf9bf7fffd696/MAGIC_BIT_BOARDS.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/71a087f9c5ff6d0d/BIT_BOARD.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/72e90e9a6e10073/MOVEAPPLICATION.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/9fb6391e8fbc21d5/POSITION.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/a47e8af017de9e5f/MOVELOOKUP.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/bddb61b66a04386d/MOVE.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/d43c4826732148fb/BIT_BOARD.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/e93016c4265bf067/MOVEGENERATION.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/fd7ad3c898345663/BITBOARD.ipch
+.vs/Fork Engine/v17/ipch/c87fa2748bfe984b.ipch
+.vs/Fork Engine/v17/ipch/da886f36ea01522d.ipch
+.vs/Fork Engine/v17/ipch/fdc34bc9a01d2bf5.ipch
+.vs/Fork Engine/v17/Solution.VC.db
+coreLib/coreLib.vcxproj
+coreLib/coreLib.vcxproj.filters
+coreLib/coreLib.vcxproj.user
+coreLib/x64/Debug/coreLib.lib.recipe
+coreLib/x64/Debug/coreLib.log
+coreLib/x64/Debug/coreLib.tlog/CL.command.1.tlog
+coreLib/x64/Debug/coreLib.tlog/Cl.items.tlog
+coreLib/x64/Debug/coreLib.tlog/CL.read.1.tlog
+coreLib/x64/Debug/coreLib.tlog/CL.write.1.tlog
+coreLib/x64/Debug/coreLib.tlog/coreLib.lastbuildstate
+coreLib/x64/Debug/coreLib.tlog/Lib-link.read.1.tlog
+coreLib/x64/Debug/coreLib.tlog/Lib-link.write.1.tlog
+coreLib/x64/Debug/coreLib.tlog/Lib.command.1.tlog
+evalLib/evalLib.vcxproj
+evalLib/evalLib.vcxproj.filters
+evalLib/evalLib.vcxproj.user
+evalLib/x64/Debug/evalLib.lib.recipe
+evalLib/x64/Debug/evalLib.log
+evalLib/x64/Debug/evalLib.tlog/CL.command.1.tlog
+evalLib/x64/Debug/evalLib.tlog/Cl.items.tlog
+evalLib/x64/Debug/evalLib.tlog/CL.read.1.tlog
+evalLib/x64/Debug/evalLib.tlog/CL.write.1.tlog
+evalLib/x64/Debug/evalLib.tlog/evalLib.lastbuildstate
+evalLib/x64/Debug/evalLib.tlog/Lib-link.read.1.tlog
+evalLib/x64/Debug/evalLib.tlog/Lib-link.write.1.tlog
+evalLib/x64/Debug/evalLib.tlog/Lib.command.1.tlog
+Fork Engine/x64/Debug/vc143.pdb
+Fork Engine/x64/Debug/vc143.idb
+Fork Engine/x64/Debug/Fork Engine.tlog/unsuccessfulbuild
+Fork Engine/x64/Debug/Fork Engine.tlog/link.write.1.tlog
+Fork Engine/x64/Debug/Fork Engine.tlog/link.read.2.tlog
+Fork Engine/x64/Debug/Fork Engine.tlog/link.read.1.tlog
+Fork Engine/x64/Debug/Fork Engine.tlog/link.command.1.tlog
+Fork Engine/x64/Debug/Fork Engine.tlog/link-rc.write.1.tlog
+Fork Engine/x64/Debug/Fork Engine.tlog/link-rc.read.1.tlog
+Fork Engine/x64/Debug/Fork Engine.tlog/link-cvtres.write.1.tlog
+Fork Engine/x64/Debug/Fork Engine.tlog/link-cvtres.read.1.tlog
+Fork Engine/x64/Debug/Fork Engine.tlog/Fork Engine.lastbuildstate
+Fork Engine/x64/Debug/Fork Engine.tlog/CL.write.1.tlog
+Fork Engine/x64/Debug/Fork Engine.tlog/CL.read.1.tlog
+Fork Engine/x64/Debug/Fork Engine.tlog/CL.command.1.tlog
+Fork Engine/x64/Debug/Fork Engine.log
+Fork Engine/Fork Engine.vcxproj.user
+Fork Engine/Fork Engine.vcxproj.filters
+Fork Engine/Fork Engine.vcxproj
+searchLib/searchLib.vcxproj
+searchLib/searchLib.vcxproj.filters
+searchLib/searchLib.vcxproj.user
+x64/Debug/coreLib.idb
+x64/Debug/coreLib.pdb
+x64/Debug/evalLib.idb
+x64/Debug/evalLib.pdb
+x64/Debug/Fork Engine.pdb
+*.idb
+*.pdb
+*.lastbuildstate
+*.tlog
+*.log
+*.recipe
+*.vsidx
+.vs/Fork Engine/v17/Browse.VC.db-shm
+.vs/Fork Engine/v17/Browse.VC.db-wal
+.vs/Fork Engine/v17/Browse.VC.opendb
+.vs/Fork Engine/v17/ipch/AutoPCH/66ddd00310a38c5d/ENGINE.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/73726016d857f611/ENGINE.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/cbefb3f78a7939ba/MAIN.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/e7d2656270f199d4/PCH.ipch
+.vs/Fork Engine/v17/Solution.VC.db-shm
+.vs/Fork Engine/v17/Solution.VC.db-wal
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
