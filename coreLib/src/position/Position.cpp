@@ -3,9 +3,8 @@
 #include <bit>
 #include <array>
 #include <move/move_application.h>
-#include <piece/piece_type.h>
 #include <position/bit_board.h>
-#include <move/movement_masks.h>
+#include <move/move_lookup.h>
 
 namespace chess {
 

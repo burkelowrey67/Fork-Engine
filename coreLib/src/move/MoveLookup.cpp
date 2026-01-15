@@ -5,7 +5,7 @@
 #include <bit>
 #include <vector>
 
-namespace move::lookup {
+namespace move::lookups {
 
 	static uint64_t bishopLookups[64][512];
 	static uint64_t rookLookups[64][4096];
@@ -13,11 +13,11 @@ namespace move::lookup {
 	uint64_t lookup(piece::PieceType pieceType, unsigned int squareIndex, uint64_t allPieces) {
 		switch (pieceType) {
 		case piece::PieceType::Knight:  return move::masks::KNIGHT_MASKS[squareIndex];
-		case piece::PieceType::Bishop:  return move::lookups::lookup(piece::PieceType::Bishop, squareIndex, allPieces & move::masks::BISHOP_MASKS[squareIndex]);
-		case piece::PieceType::Rook:    return move::lookups::lookup(piece::PieceType::Rook, squareIndex, allPieces & move::masks::ROOK_MASKS[squareIndex]);
+		case piece::PieceType::Bishop:  return bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::masks::BISHOP_MASKS[squareIndex], squareIndex, pieceType)];
+		case piece::PieceType::Rook:    return rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::masks::ROOK_MASKS[squareIndex], squareIndex, pieceType)];
 		case piece::PieceType::Queen:
-			return  move::lookups::lookup(piece::PieceType::Bishop, squareIndex, allPieces & move::masks::BISHOP_MASKS[squareIndex]) |
-				move::lookups::lookup(piece::PieceType::Rook, squareIndex, allPieces & move::masks::ROOK_MASKS[squareIndex]);
+			return  bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::masks::BISHOP_MASKS[squareIndex], squareIndex, pieceType)] |
+					rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::masks::BISHOP_MASKS[squareIndex], squareIndex, pieceType)];
 		case piece::PieceType::King:    return move::masks::KING_MASKS[squareIndex];
 		default: return 0;
 		}
