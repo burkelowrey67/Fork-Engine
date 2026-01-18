@@ -1,7 +1,7 @@
 #pragma once
 #include <color.h>
 
-namespace piece {
+namespace core::piece {
 	enum class PieceType : uint8_t {
 		Pawn, Knight, Bishop, Rook, Queen, King, 
 		None, N
@@ -12,8 +12,8 @@ namespace piece {
 	* @param color: Color of pawn.
 	* @return index
 	*/
-	inline int pawn_index(chess::Color color) {
-		return color == chess::Color::White ? 0 : 6;
+	inline int pawn_index(core::Color color) {
+		return color == core::Color::White ? 0 : 6;
 	}
 
 	/*
@@ -21,8 +21,8 @@ namespace piece {
 	* @param color: Color of knight.
 	* @return index
 	*/
-	inline int knight_index(chess::Color color) {
-		return color == chess::Color::White ? 1 : 7;
+	inline int knight_index(core::Color color) {
+		return color == core::Color::White ? 1 : 7;
 	}
 
 	/*
@@ -30,8 +30,8 @@ namespace piece {
 	* @param color: Color of bishop.
 	* @return index
 	*/
-	inline int bishop_index(chess::Color color) {
-		return color == chess::Color::White ? 2 : 8;
+	inline int bishop_index(core::Color color) {
+		return color == core::Color::White ? 2 : 8;
 	}
 
 	/*
@@ -39,8 +39,8 @@ namespace piece {
 	* @param color: Color of rook.
 	* @return index
 	*/
-	inline int rook_index(chess::Color color) {
-		return color == chess::Color::White ? 3 : 9;
+	inline int rook_index(core::Color color) {
+		return color == core::Color::White ? 3 : 9;
 	}
 
 	/*
@@ -48,8 +48,8 @@ namespace piece {
 	* @param color: Color of queen.
 	* @return index
 	*/
-	inline int queen_index(chess::Color color) {
-		return color == chess::Color::White ? 4 : 10;
+	inline int queen_index(core::Color color) {
+		return color == core::Color::White ? 4 : 10;
 	}
 
 	/*
@@ -57,8 +57,8 @@ namespace piece {
 	* @param color: Color of king.
 	* @return index
 	*/
-	inline int king_index(chess::Color color) {
-		return color == chess::Color::White ? 5 : 11;
+	inline int king_index(core::Color color) {
+		return color == core::Color::White ? 5 : 11;
 	}
 
 
@@ -67,20 +67,20 @@ namespace piece {
 	* @param color: Color of piece.
 	* @return index
 	*/
-	inline int colored_index(chess::Color color, PieceType pieceType) {
+	inline int colored_index(core::Color color, PieceType pieceType) {
 		switch (pieceType)
 		{
-		case piece::PieceType::Pawn:
+		case core::piece::PieceType::Pawn:
 			return pawn_index(color);
-		case piece::PieceType::Knight:
+		case core::piece::PieceType::Knight:
 			return knight_index(color);
-		case piece::PieceType::Bishop:
+		case core::piece::PieceType::Bishop:
 			return bishop_index(color);
-		case piece::PieceType::Rook:
+		case core::piece::PieceType::Rook:
 			return rook_index(color);
-		case piece::PieceType::Queen:
+		case core::piece::PieceType::Queen:
 			return queen_index(color);
-		case piece::PieceType::King:
+		case core::piece::PieceType::King:
 			return king_index(color);
 		default:
 			return -1;
@@ -88,6 +88,6 @@ namespace piece {
 	}
 
 	inline int non_colored_index(PieceType pieceType) {
-		return colored_index(chess::Color::White, pieceType);
+		return colored_index(core::Color::White, pieceType);
 	}
 }

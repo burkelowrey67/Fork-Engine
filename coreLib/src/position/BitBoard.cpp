@@ -1,7 +1,7 @@
 #include <position/bit_board.h>
 #include <bit>
 
-namespace chess::bit_board {
+namespace core::bit_board {
 
 
 

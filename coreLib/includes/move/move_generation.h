@@ -12,5 +12,5 @@ namespace move {
 	* @param position:	Chess position.
 	* @param moves:		[Out] Output container filled with moves.
 	*/
-	void generate_pseudolegal_moves(chess::Position& position, std::vector<uint32_t>& moves);
+	void generate_pseudolegal_moves(core::Position& position, std::vector<uint32_t>& moves);
 }

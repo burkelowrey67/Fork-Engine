@@ -73,11 +73,11 @@ namespace move::magic_numbers {
     * @param pieceType:     Type of the piece specifying the look-up.
     * @return look-up index
     */
-    inline int get_lookup_index(uint64_t blockerConfig, int squareIndex, piece::PieceType pieceType) {
+    inline int get_lookup_index(uint64_t blockerConfig, int squareIndex, core::piece::PieceType pieceType) {
         switch (pieceType)
         {
-        case piece::PieceType::Bishop:  return (int)((blockerConfig, bishopMagics[squareIndex]) >> bishopShifts[squareIndex]);
-        case piece::PieceType::Rook:    return (int)((blockerConfig, rookMagics[squareIndex]) >> rookShifts[squareIndex]);
+        case core::piece::PieceType::Bishop:  return (int)((blockerConfig, bishopMagics[squareIndex]) >> bishopShifts[squareIndex]);
+        case core::piece::PieceType::Rook:    return (int)((blockerConfig, rookMagics[squareIndex]) >> rookShifts[squareIndex]);
         default: return -1;
         }
     }

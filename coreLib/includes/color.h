@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 
-namespace chess {
+namespace core {
 	enum class Color : uint8_t{
 		White, Black
 	};

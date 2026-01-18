@@ -161,16 +161,16 @@ namespace move::mask {
     * @param squareIndex:   Index of square in a bit board [0, 63].
     * @return movement mask
     */
-    constexpr inline uint64_t get_mask(piece::PieceType pieceType, unsigned int squareIndex) {
-        if (pieceType == piece::PieceType::Pawn) return 0;
+    constexpr inline uint64_t get_mask(core::piece::PieceType pieceType, unsigned int squareIndex) {
+        if (pieceType == core::piece::PieceType::Pawn) return 0;
 
         switch (pieceType)
         {
-        case piece::PieceType::Knight:  return KNIGHT_MASKS[squareIndex];
-        case piece::PieceType::Bishop:  return BISHOP_MASKS[squareIndex];
-        case piece::PieceType::Rook:    return ROOK_MASKS[squareIndex];
-        case piece::PieceType::Queen:   return QUEEN_MASKS[squareIndex];
-        case piece::PieceType::King:    return KING_MASKS[squareIndex];
+        case core::piece::PieceType::Knight:  return KNIGHT_MASKS[squareIndex];
+        case core::piece::PieceType::Bishop:  return BISHOP_MASKS[squareIndex];
+        case core::piece::PieceType::Rook:    return ROOK_MASKS[squareIndex];
+        case core::piece::PieceType::Queen:   return QUEEN_MASKS[squareIndex];
+        case core::piece::PieceType::King:    return KING_MASKS[squareIndex];
         default:                        return 0;
         }
     }
@@ -183,11 +183,11 @@ namespace move::mask {
     * @param attacking:     True if the pawn is attacking.
     * @return movement mask
     */
-    constexpr inline uint64_t get_pawn_mask(chess::Color color, unsigned int squareIndex, bool attacking) {
+    constexpr inline uint64_t get_pawn_mask(core::Color color, unsigned int squareIndex, bool attacking) {
         switch (color)
         {
-        case chess::Color::White: return attacking ? WHITE_PAWN_ATTACKS[squareIndex] : WHITE_PAWN_PUSHES[squareIndex];
-        case chess::Color::Black: return attacking ? BLACK_PAWN_ATTACKS[squareIndex] : BLACK_PAWN_PUSHES[squareIndex];
+        case core::Color::White: return attacking ? WHITE_PAWN_ATTACKS[squareIndex] : WHITE_PAWN_PUSHES[squareIndex];
+        case core::Color::Black: return attacking ? BLACK_PAWN_ATTACKS[squareIndex] : BLACK_PAWN_PUSHES[squareIndex];
         default: return 0;
         }
     }

@@ -13,5 +13,5 @@ namespace move {
 	 *                 but will be restored before the function returns.
 	 * @return move
 	 */
-	move::Move search(chess::Position& position);
+	move::Move search(core::Position& position);
 }

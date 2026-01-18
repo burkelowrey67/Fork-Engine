@@ -6,13 +6,13 @@
 #include <position/bit_board.h>
 #include <move/move_lookup.h>
 
-namespace chess {
+namespace core {
 
 	Position::Position(
 		uint64_t (&_bitBoards)[12],
 		bool _w_kingSideCastle, bool _b_kingSideCastle,
 		bool _w_queenSideCastle, bool _b_queenSideCastle,
-		uint8_t _enPassantSquare, chess::Color _toMove
+		uint8_t _enPassantSquare, core::Color _toMove
 
 	) : bitBoards(_bitBoards), 
 		w_kingSideCastle(_w_kingSideCastle), w_queenSideCastle(_w_queenSideCastle),
@@ -24,11 +24,11 @@ namespace chess {
 	}
 
 	void Position::update_masks() {
-		friendlyPieces = toMove == chess::Color::White ?
+		friendlyPieces = toMove == core::Color::White ?
 			bitBoards[0] | bitBoards[1] | bitBoards[2] | bitBoards[3] | bitBoards[4] | bitBoards[5] :
 			bitBoards[6] | bitBoards[7] | bitBoards[8] | bitBoards[9] | bitBoards[10] | bitBoards[11];
 
-		enemyPieces = toMove == chess::Color::Black ?
+		enemyPieces = toMove == core::Color::Black ?
 			bitBoards[0] | bitBoards[1] | bitBoards[2] | bitBoards[3] | bitBoards[4] | bitBoards[5] :
 			bitBoards[6] | bitBoards[7] | bitBoards[8] | bitBoards[9] | bitBoards[10] | bitBoards[11];
 
@@ -49,7 +49,7 @@ namespace chess {
 		}
 	}
 
-	uint64_t& Position::get_bit_board_ref(piece::PieceType pieceType, chess::Color color) {
+	uint64_t& Position::get_bit_board_ref(core::piece::PieceType pieceType, core::Color color) {
 		int encoded = (static_cast<int>(color) << 3) | static_cast<int>(pieceType);
 
 		switch (encoded) {
@@ -69,7 +69,7 @@ namespace chess {
 		}
 	}
 
-	uint64_t Position::get_bit_board(piece::PieceType pieceType, chess::Color color) {
+	uint64_t Position::get_bit_board(core::piece::PieceType pieceType, core::Color color) {
 		return get_bit_board_ref(pieceType, color);
 	}
 
@@ -98,51 +98,51 @@ namespace chess {
 	}
 
 	uint64_t& Position::get_enemy_pawn_bit_board_ref() {
-		return get_king_bit_board_ref(chess::opposite_color(toMove));
+		return get_king_bit_board_ref(core::opposite_color(toMove));
 	}
 
 	uint64_t& Position::get_enemy_knight_bit_board_ref() {
-		return get_knight_bit_board_ref(chess::opposite_color(toMove));
+		return get_knight_bit_board_ref(core::opposite_color(toMove));
 	}
 
 	uint64_t& Position::get_enemy_bishop_bit_board_ref() {
-		return get_bishop_bit_board_ref(chess::opposite_color(toMove));
+		return get_bishop_bit_board_ref(core::opposite_color(toMove));
 	}
 
 	uint64_t& Position::get_enemy_rook_bit_board_ref() {
-		return get_rook_bit_board_ref(chess::opposite_color(toMove));
+		return get_rook_bit_board_ref(core::opposite_color(toMove));
 	}
 
 	uint64_t& Position::get_enemy_queen_bit_board_ref() {
-		return get_queen_bit_board_ref(chess::opposite_color(toMove));
+		return get_queen_bit_board_ref(core::opposite_color(toMove));
 	}
 
 	uint64_t& Position::get_enemy_king_bit_board_ref() {
-		return get_king_bit_board_ref(chess::opposite_color(toMove));
+		return get_king_bit_board_ref(core::opposite_color(toMove));
 	}
 
-	uint64_t& Position::get_pawn_bit_board_ref(chess::Color color) {
-		return color == chess::Color::White ? bitBoards[0] : bitBoards[6];
+	uint64_t& Position::get_pawn_bit_board_ref(core::Color color) {
+		return color == core::Color::White ? bitBoards[0] : bitBoards[6];
 	}
 
-	uint64_t& Position::get_knight_bit_board_ref(chess::Color color) {
-		return color == chess::Color::White ? bitBoards[1] : bitBoards[7];
+	uint64_t& Position::get_knight_bit_board_ref(core::Color color) {
+		return color == core::Color::White ? bitBoards[1] : bitBoards[7];
 	}
 
-	uint64_t& Position::get_bishop_bit_board_ref(chess::Color color) {
-		return color == chess::Color::White ? bitBoards[2] : bitBoards[8];
+	uint64_t& Position::get_bishop_bit_board_ref(core::Color color) {
+		return color == core::Color::White ? bitBoards[2] : bitBoards[8];
 	}
 
-	uint64_t& Position::get_rook_bit_board_ref(chess::Color color) {
-		return color == chess::Color::White ? bitBoards[3] : bitBoards[9];
+	uint64_t& Position::get_rook_bit_board_ref(core::Color color) {
+		return color == core::Color::White ? bitBoards[3] : bitBoards[9];
 	}
 
-	uint64_t& Position::get_queen_bit_board_ref(chess::Color color) {
-		return color == chess::Color::White ? bitBoards[4] : bitBoards[10];
+	uint64_t& Position::get_queen_bit_board_ref(core::Color color) {
+		return color == core::Color::White ? bitBoards[4] : bitBoards[10];
 	}
 
-	uint64_t& Position::get_king_bit_board_ref(chess::Color color) {
-		return color == chess::Color::White ? bitBoards[5] : bitBoards[11];
+	uint64_t& Position::get_king_bit_board_ref(core::Color color) {
+		return color == core::Color::White ? bitBoards[5] : bitBoards[11];
 	}
 
 	uint64_t Position::get_friendly_pawn_bit_board() {
@@ -170,97 +170,97 @@ namespace chess {
 	}
 
 	uint64_t Position::get_enemy_pawn_bit_board() {
-		return get_king_bit_board(chess::opposite_color(toMove));
+		return get_king_bit_board(core::opposite_color(toMove));
 	}
 
 	uint64_t Position::get_enemy_knight_bit_board() {
-		return get_knight_bit_board(chess::opposite_color(toMove));
+		return get_knight_bit_board(core::opposite_color(toMove));
 	}
 
 	uint64_t Position::get_enemy_bishop_bit_board() {
-		return get_bishop_bit_board(chess::opposite_color(toMove));
+		return get_bishop_bit_board(core::opposite_color(toMove));
 	}
 
 	uint64_t Position::get_enemy_rook_bit_board() {
-		return get_rook_bit_board(chess::opposite_color(toMove));
+		return get_rook_bit_board(core::opposite_color(toMove));
 	}
 
 	uint64_t Position::get_enemy_queen_bit_board() {
-		return get_queen_bit_board(chess::opposite_color(toMove));
+		return get_queen_bit_board(core::opposite_color(toMove));
 	}
 
 	uint64_t Position::get_enemy_king_bit_board() {
-		return get_king_bit_board(chess::opposite_color(toMove));
+		return get_king_bit_board(core::opposite_color(toMove));
 	}
 
-	uint64_t Position::get_pawn_bit_board(chess::Color color) {
-		return color == chess::Color::White ? bitBoards[0] : bitBoards[6];
+	uint64_t Position::get_pawn_bit_board(core::Color color) {
+		return color == core::Color::White ? bitBoards[0] : bitBoards[6];
 	}
 
-	uint64_t Position::get_knight_bit_board(chess::Color color) {
-		return color == chess::Color::White ? bitBoards[1] : bitBoards[7];
+	uint64_t Position::get_knight_bit_board(core::Color color) {
+		return color == core::Color::White ? bitBoards[1] : bitBoards[7];
 	}
 
-	uint64_t Position::get_bishop_bit_board(chess::Color color) {
-		return color == chess::Color::White ? bitBoards[2] : bitBoards[8];
+	uint64_t Position::get_bishop_bit_board(core::Color color) {
+		return color == core::Color::White ? bitBoards[2] : bitBoards[8];
 	}
 
-	uint64_t Position::get_rook_bit_board(chess::Color color) {
-		return color == chess::Color::White ? bitBoards[3] : bitBoards[9];
+	uint64_t Position::get_rook_bit_board(core::Color color) {
+		return color == core::Color::White ? bitBoards[3] : bitBoards[9];
 	}
 
-	uint64_t Position::get_queen_bit_board(chess::Color color) {
-		return color == chess::Color::White ? bitBoards[4] : bitBoards[10];
+	uint64_t Position::get_queen_bit_board(core::Color color) {
+		return color == core::Color::White ? bitBoards[4] : bitBoards[10];
 	}
 
-	uint64_t Position::get_king_bit_board(chess::Color color) {
-		return color == chess::Color::White ? bitBoards[5] : bitBoards[11];
+	uint64_t Position::get_king_bit_board(core::Color color) {
+		return color == core::Color::White ? bitBoards[5] : bitBoards[11];
 	}
 
 	int Position::piece_count() {
-		return piece_count(chess::Color::White) + piece_count(chess::Color::Black);
+		return piece_count(core::Color::White) + piece_count(core::Color::Black);
 	}
 
-	int Position::piece_count(chess::Color color) {
-		return color == chess::Color::White ?
+	int Position::piece_count(core::Color color) {
+		return color == core::Color::White ?
 			std::popcount(bitBoards[1]) + std::popcount(bitBoards[2]) +
 			std::popcount(bitBoards[3]) + std::popcount(bitBoards[4]) :
 			std::popcount(bitBoards[7]) + std::popcount(bitBoards[8]) +
 			std::popcount(bitBoards[9]) + std::popcount(bitBoards[10]);
 	}
 
-	int Position::num_pawns(chess::Color color) {
+	int Position::num_pawns(core::Color color) {
 		return std::popcount(get_pawn_bit_board(color));
 	}
 
-	int Position::num_knights(chess::Color color) {
+	int Position::num_knights(core::Color color) {
 		return std::popcount(get_knight_bit_board(color));
 	}
 
-	int Position::num_bishops(chess::Color color) {
+	int Position::num_bishops(core::Color color) {
 		return std::popcount(get_bishop_bit_board(color));
 	}
 
-	int Position::num_rooks(chess::Color color) {
+	int Position::num_rooks(core::Color color) {
 		return std::popcount(get_rook_bit_board(color));
 	}
 
-	int Position::num_queens(chess::Color color) {
+	int Position::num_queens(core::Color color) {
 		return std::popcount(get_queen_bit_board(color));
 	}
 
-	int Position::num_pieces(piece::PieceType pieceType, chess::Color color) {
+	int Position::num_pieces(core::piece::PieceType pieceType, core::Color color) {
 		switch (pieceType)
 		{
-		case piece::PieceType::Pawn:
+		case core::piece::PieceType::Pawn:
 			return num_pawns(color);
-		case piece::PieceType::Knight:
+		case core::piece::PieceType::Knight:
 			return num_knights(color);
-		case piece::PieceType::Bishop:
+		case core::piece::PieceType::Bishop:
 			return num_bishops(color);
-		case piece::PieceType::Rook:
+		case core::piece::PieceType::Rook:
 			return num_rooks(color);
-		case piece::PieceType::Queen:
+		case core::piece::PieceType::Queen:
 			return num_queens(color);
 		default:
 			return -1;
@@ -268,52 +268,52 @@ namespace chess {
 	}
 
 	int Position::piece_diff() {
-		return piece_count(chess::Color::White) - piece_count(chess::Color::Black);
+		return piece_count(core::Color::White) - piece_count(core::Color::Black);
 	}
 
 	int Position::pawn_diff() {
-		return num_pawns(chess::Color::White) - num_pawns(chess::Color::Black);
+		return num_pawns(core::Color::White) - num_pawns(core::Color::Black);
 	}
 
 	int Position::knight_diff() {
-		return num_knights(chess::Color::White) - num_knights(chess::Color::Black);
+		return num_knights(core::Color::White) - num_knights(core::Color::Black);
 	}
 
 	int Position::bishop_diff() {
-		return num_bishops(chess::Color::White) - num_bishops(chess::Color::Black);
+		return num_bishops(core::Color::White) - num_bishops(core::Color::Black);
 	}
 
 	int Position::rook_diff() {
-		return num_rooks(chess::Color::White) - num_rooks(chess::Color::Black);
+		return num_rooks(core::Color::White) - num_rooks(core::Color::Black);
 	}
 
 	int Position::queen_diff() {
-		return num_queens(chess::Color::White) - num_queens(chess::Color::Black);
+		return num_queens(core::Color::White) - num_queens(core::Color::Black);
 	}
 
 	bool Position::is_king_attacked() {
 		return Position::is_king_attacked(toMove);
 	}
 
-	bool Position::is_king_attacked(chess::Color color) {
+	bool Position::is_king_attacked(core::Color color) {
 		int kingSquare = std::countr_zero(Position::get_pawn_bit_board(color));
 		return is_square_attacked(kingSquare, color);
 	}
 
-	bool Position::is_square_attacked(unsigned int squareIndex, chess::Color attacking) {
-		int lowBound = piece::colored_index(attacking, piece::PieceType::Pawn);
-		uint64_t squareIndexMap = chess::bit_board::square_to_bit_board(squareIndex);
+	bool Position::is_square_attacked(unsigned int squareIndex, core::Color attacking) {
+		int lowBound = core::piece::colored_index(attacking, core::piece::PieceType::Pawn);
+		uint64_t squareIndexMap = core::bit_board::square_to_bit_board(squareIndex);
 
 		for (int piece = lowBound; piece < lowBound + 6; piece++) {
 			uint64_t attackingPieces = bitBoards[piece];
 
 			while (attackingPieces) {
-				int currentIndex = chess::bit_board::get_first_square_index(attackingPieces);
-				piece::PieceType pieceType = static_cast<piece::PieceType>(piece);
+				int currentIndex = core::bit_board::get_first_square_index(attackingPieces);
+				core::piece::PieceType pieceType = static_cast<core::piece::PieceType>(piece);
 
 				uint64_t attackingMask;
 
-				if (pieceType == piece::PieceType::Pawn) {
+				if (pieceType == core::piece::PieceType::Pawn) {
 					attackingMask = move::mask::get_pawn_mask(toMove, currentIndex, true);
 				}
 
@@ -323,7 +323,7 @@ namespace chess {
 					return true;
 				}
 				
-				chess::bit_board::remove_first_one(attackingPieces);
+				core::bit_board::remove_first_one(attackingPieces);
 			}
 		}
 
@@ -337,8 +337,8 @@ namespace chess {
 	bool Position::is_enemy_square(unsigned int squareIndex) {
 		switch (toMove)
 		{
-		case chess::Color::White: return pieceIndexAtSquare[squareIndex] > 5;
-		case chess::Color::Black: return pieceIndexAtSquare[squareIndex] <= 5;
+		case core::Color::White: return pieceIndexAtSquare[squareIndex] > 5;
+		case core::Color::Black: return pieceIndexAtSquare[squareIndex] <= 5;
 		default: return false;
 		}
 	}

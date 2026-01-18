@@ -28,8 +28,8 @@ namespace move::decode {
 	* @param move: Encoded unsigned 32-bit move integer.
 	* @return movee piece type
 	*/
-	inline piece::PieceType piece_type(uint32_t& move) {
-		return static_cast<piece::PieceType>((move >> 12) & 0x3);
+	inline core::piece::PieceType piece_type(uint32_t& move) {
+		return static_cast<core::piece::PieceType>((move >> 12) & 0x3);
 	}
 
 	/*
@@ -37,8 +37,8 @@ namespace move::decode {
 	* @param move: Encoded unsigned 32-bit move integer.
 	* @return captured piece type
 	*/
-	inline piece::PieceType captured_type(uint32_t& move) {
-		return static_cast<piece::PieceType>((move >> 15) & 0x3);
+	inline core::piece::PieceType captured_type(uint32_t& move) {
+		return static_cast<core::piece::PieceType>((move >> 15) & 0x3);
 	}
 
 	/*
@@ -46,8 +46,8 @@ namespace move::decode {
 	* @param move: Encoded unsigned 32-bit move integer.
 	* @return promotion piece type
 	*/
-	inline piece::PieceType promotion_type(uint32_t& move) {
-		return static_cast<piece::PieceType>((move >> 18) & 0x3);
+	inline core::piece::PieceType promotion_type(uint32_t& move) {
+		return static_cast<core::piece::PieceType>((move >> 18) & 0x3);
 	}
 
 	/*

@@ -5,7 +5,7 @@
 
 namespace position::evaluation {
 
-	double eval(chess::Position& position) {
+	double eval(core::Position& position) {
 		return
 			pawnValue	* position.pawn_diff() +
 			knightValue * position.knight_diff() +

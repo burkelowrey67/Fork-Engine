@@ -3,11 +3,11 @@
 
 namespace fork {
 
-	double Engine::eval(chess::Position& position) {
+	double Engine::eval(core::Position& position) {
 		return position::evaluation::eval(position);
 	}
 
-	move::Move Engine::search(chess::Position& position) {
+	move::Move Engine::search(core::Position& position) {
 		return move::search(position);
 	}
 }

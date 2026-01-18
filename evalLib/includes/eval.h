@@ -4,12 +4,12 @@
 
 namespace position::evaluation {
 
-	constexpr double pawnValue = 1;
-	constexpr double knightValue = 3;
-	constexpr double bishopValue = 3;
-	constexpr double rookValue = 5;
-	constexpr double queenValue = 9;
-	constexpr double kingValue = INT32_MAX;
+	inline constexpr double pawnValue = 1;
+	inline constexpr double knightValue = 3;
+	inline constexpr double bishopValue = 3;
+	inline constexpr double rookValue = 5;
+	inline constexpr double queenValue = 9;
+	inline constexpr double kingValue = INT32_MAX;
 
 	/*
 	* @brief Returns a double representing the strength of the position for the white player.
@@ -17,5 +17,5 @@ namespace position::evaluation {
 	* @param position: Chess position.
 	* @return double
 	*/
-	double eval(chess::Position& position);
+	double eval(core::Position& position);
 }

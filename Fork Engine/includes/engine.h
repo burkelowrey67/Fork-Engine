@@ -15,7 +15,7 @@ namespace fork {
 		* @param position : Chess position.
 		* @return double
 		*/
-		double eval(chess::Position& position);
+		double eval(core::Position& position);
 
 		/**
 		 * @brief Searches the current position and selects the best move.
@@ -24,7 +24,7 @@ namespace fork {
 		 *                 but will be restored before the function returns.
 		 * @return move
 		 */
-		move::Move search(chess::Position& position);
+		move::Move search(core::Position& position);
 	};
 }
 

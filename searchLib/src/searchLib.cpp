@@ -12,7 +12,7 @@
 namespace move {
 
 
-	move::Move search(chess::Position& position) {
+	move::Move search(core::Position& position) {
 		std::vector<uint32_t> moves;
 		moves.reserve(256);
 
@@ -22,7 +22,7 @@ namespace move {
 		double bestScore = DBL_MIN;
 
 		for (move::Move move : moves) {
-			chess::Position nextPosition = move::next_position(position, move);
+			core::Position nextPosition = move::next_position(position, move);
 			double score = position::evaluation::eval(nextPosition);
 			if (score > bestScore) bestMove = move; bestScore = score;
 		}

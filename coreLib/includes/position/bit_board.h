@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <piece/piece_type.h>
 
-namespace chess::bit_board {
+namespace core::bit_board {
 
     inline constexpr uint64_t EDGE_MASK = 0xFF818181818181FF;
 
