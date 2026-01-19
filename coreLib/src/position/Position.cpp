@@ -12,13 +12,15 @@ namespace core {
 		uint64_t (&_bitBoards)[12],
 		bool _w_kingSideCastle, bool _b_kingSideCastle,
 		bool _w_queenSideCastle, bool _b_queenSideCastle,
-		uint8_t _enPassantSquare, core::Color _toMove
+		uint8_t _enPassantSquare, core::Color _toMove,
+		int _fullMoveClock, int _halfMoveClock
 
 	) : bitBoards(_bitBoards), 
 		w_kingSideCastle(_w_kingSideCastle), w_queenSideCastle(_w_queenSideCastle),
 		b_kingSideCastle(_b_kingSideCastle), b_queenSideCastle(_b_queenSideCastle), 
-		enPassantSquare(_enPassantSquare), toMove(_toMove) {
-
+		enPassantSquare(_enPassantSquare), toMove(_toMove),
+		fullMoveClock(_fullMoveClock), halfMoveClock(_halfMoveClock)
+	{
 		update_masks();
 		update_lookup();
 	}

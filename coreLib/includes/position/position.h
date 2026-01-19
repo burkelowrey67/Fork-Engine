@@ -23,11 +23,15 @@ namespace core {
 
 		core::Color toMove;
 
+		int fullMoveClock;
+		int halfMoveClock;
+
 		Position(
 			uint64_t (&bitBoards)[12],
 			bool w_kingSideCastle, bool b_kingSideCastle, 
 			bool w_queenSideCastle, bool b_queenSideCastle,
-			uint8_t enPassantSquare, core::Color _toMove
+			uint8_t enPassantSquare, core::Color toMove, 
+			int fullMoveClock, int halfMoveClock
 		);
 
 		Position();
