@@ -69,10 +69,10 @@ namespace uci::fen {
         for (int i = 0; i < 4; i++) {
             switch (*(castleString + i))
             {
-            case 'K': (*position).w_kingSideCastle = true;
-            case 'Q': (*position).w_queenSideCastle = true;
-            case 'k': (*position).b_kingSideCastle = true;
-            case 'q': (*position).b_queenSideCastle = true;
+            case 'K': (*position).w_kingSideCastle  = true; break;
+            case 'Q': (*position).w_queenSideCastle = true; break;
+            case 'k': (*position).b_kingSideCastle  = true; break;
+            case 'q': (*position).b_queenSideCastle = true; break;
             default:  return;
             }
         }
@@ -128,18 +128,24 @@ namespace uci::fen {
 
             if (rank != 0) fen += emptyFor == 0 ? "/" : std::format("%d/", emptyFor + 1);;
         }
+    }
 
-        fen += ' ';
+    static void format_castling(std::string& fen, core::Position& position) {
+        bool anyCastle = false;
+
+        if (position.w_kingSideCastle)  fen += 'K'; anyCastle = true;
+        if (position.w_queenSideCastle) fen += 'Q'; anyCastle = true;
+        if (position.b_kingSideCastle)  fen += 'k'; anyCastle = true;
+        if (position.b_queenSideCastle) fen += 'q'; anyCastle = true;
+
+        if (!anyCastle) fen += "-";
     }
 
     std::string format(core::Position& position) {
         std::string fen;
-        format_position(fen, position);
-        fen += position.toMove == core::Color::White ? 'w' + ' ' : 'b' + ' ';
-        if (position.w_kingSideCastle)  fen += 'K';
-        if (position.w_queenSideCastle) fen += 'Q';
-        if (position.b_kingSideCastle)  fen += 'k';
-        if (position.b_queenSideCastle) fen += 'q';
+        format_position(fen, position); fen += ' ';
+        fen += position.toMove == core::Color::White ? "w " : "b ";
+        format_castling(fen, position); fen += ' ';
         fen += position.halfMoveClock + ' ';
         fen += position.fullMoveClock;
     }
