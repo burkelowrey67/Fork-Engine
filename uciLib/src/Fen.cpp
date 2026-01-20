@@ -1,3 +1,4 @@
+#include "pch.h"
 #include <fen.h>
 #include <position/bit_board.h>
 #include <square.h>
@@ -87,17 +88,14 @@ namespace uci::fen {
 	core::Position* parse(char* fen) {
         if (!std::regex_match(fen, fenRegex)) throw std::invalid_argument("Invalid FEN string");
 
-        core::Position* position = new core::Position();
-
-        std::vector<char*> spaces;
-        spaces.reserve(6);
-
+        core::Position* position = core::Position::default_position();
+        
         std::vector<char*> words;
+        words.reserve(6);
 
-        char* token = std::strtok(fen, " "); // split by space
-        while (token != nullptr) {
-            words.push_back(token);
-            token = std::strtok(nullptr, " ");
+        while (*fen != '\0') {
+            if (*fen == ' ') words.push_back(++fen);
+            fen++;
         }
 
         parse_position_string(words[0], position);
@@ -142,11 +140,13 @@ namespace uci::fen {
     }
 
     std::string format(core::Position& position) {
-        std::string fen;
+        std::string fen = std::string();
         format_position(fen, position); fen += ' ';
         fen += position.toMove == core::Color::White ? "w " : "b ";
         format_castling(fen, position); fen += ' ';
         fen += position.halfMoveClock + ' ';
         fen += position.fullMoveClock;
+
+        return fen;
     }
 }

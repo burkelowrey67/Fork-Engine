@@ -3,5 +3,9 @@
 
 #include "pch.h"
 #include "framework.h"
+#include <uci.h>
 
 
+namespace uci {
+
+}
