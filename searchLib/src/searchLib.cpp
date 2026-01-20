@@ -9,25 +9,18 @@
 #include <eval.h>
 #include <vector>
 #include <cfloat>
-#include <atomic>
-#include <thread>
-
-#include <mutex>
 
 namespace search {
     
-    static std::mutex infoMutex;
-    static search::SearchInfo info;
-    static std::jthread searchThread;
 
-    void go(core::Position& position) {
+    void Search::go(core::Position& position) {
         // Stop previous search if still running
         if (searchThread.joinable()) {
             searchThread.request_stop();
             searchThread.join();
         }
 
-        searchThread = std::jthread([&position](std::stop_token st) {
+        searchThread = std::jthread([&position, this](std::stop_token st) {
             std::vector<uint32_t> moves;
             moves.reserve(256);
             move::generate_pseudolegal_moves(position, moves);
@@ -55,11 +48,11 @@ namespace search {
             });
     }
 
-    void stop() {
+    void Search::stop() {
         if (searchThread.joinable()) searchThread.request_stop();
     }
 
-    search::SearchInfo get_info() {
+    search::SearchInfo Search::get_info() {
         std::lock_guard<std::mutex> lock(infoMutex);
         return info;
     }
