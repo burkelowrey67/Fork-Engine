@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fork Engine", "Fork Engine\Fork Engine.vcxproj", "{1A32C092-FB11-4548-AD91-D70FE3677675}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "evalLib", "evalLib\evalLib.vcxproj", "{3E34B68A-9B41-4937-8BA6-1576452C7018}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coreLib", "coreLib\coreLib.vcxproj", "{BF030311-526C-4C7A-9774-7228D373B5D9}"
@@ -23,14 +21,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1A32C092-FB11-4548-AD91-D70FE3677675}.Debug|x64.ActiveCfg = Debug|x64
-		{1A32C092-FB11-4548-AD91-D70FE3677675}.Debug|x64.Build.0 = Debug|x64
-		{1A32C092-FB11-4548-AD91-D70FE3677675}.Debug|x86.ActiveCfg = Debug|Win32
-		{1A32C092-FB11-4548-AD91-D70FE3677675}.Debug|x86.Build.0 = Debug|Win32
-		{1A32C092-FB11-4548-AD91-D70FE3677675}.Release|x64.ActiveCfg = Release|x64
-		{1A32C092-FB11-4548-AD91-D70FE3677675}.Release|x64.Build.0 = Release|x64
-		{1A32C092-FB11-4548-AD91-D70FE3677675}.Release|x86.ActiveCfg = Release|Win32
-		{1A32C092-FB11-4548-AD91-D70FE3677675}.Release|x86.Build.0 = Release|Win32
 		{3E34B68A-9B41-4937-8BA6-1576452C7018}.Debug|x64.ActiveCfg = Debug|x64
 		{3E34B68A-9B41-4937-8BA6-1576452C7018}.Debug|x64.Build.0 = Debug|x64
 		{3E34B68A-9B41-4937-8BA6-1576452C7018}.Debug|x86.ActiveCfg = Debug|Win32
