@@ -25,6 +25,15 @@ namespace core {
 		update_lookup();
 	}
 
+	Position* Position::default_position() {
+		uint64_t bitBoards[12] = {
+			0xFF00, 0x42, 0x24, 0x81, 0x8, 0x10,
+			0xFF000000000000, 0x4200000000000000, 0x2400000000000000, 
+			0x8100000000000000, 0x800000000000000, 0x1000000000000000
+		};
+		return new Position(bitBoards, true, true, true, true, -1, core::Color::White, 0, 1);
+	}
+
 	void Position::update_masks() {
 		friendlyPieces = toMove == core::Color::White ?
 			bitBoards[0] | bitBoards[1] | bitBoards[2] | bitBoards[3] | bitBoards[4] | bitBoards[5] :

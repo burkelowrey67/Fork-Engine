@@ -80,13 +80,17 @@ namespace move {
 		}
 	}
 
-	core::Position get_next(core::Position position, move::Move& move) {
+	core::Position next_position(core::Position position, uint32_t& move) {
 		core::Position copy = core::Position(position);
 		apply_move(copy, move);
 		return copy;
 	}
 
-	void apply_move(core::Position& position, move::Move& move) {
+	core::Position next_position(core::Position& position, move::Move& move) {
+		return next_position(position, move.encodedMove);
+	}
+
+	void apply_move(core::Position position, move::Move& move) {
 		apply_move(position, move.encodedMove);
 	}
 
