@@ -1,13 +1,28 @@
 #include <engine.h>
 #include <eval.h>
+#include <move_search.h>
 
 namespace fork {
 
-	double Engine::eval(core::Position& position) {
-		return position::evaluation::eval(position);
+	Engine::Engine() : position(core::Position::default_position()) {};
+	Engine::~Engine() = default;
+
+	void Engine::initialize() {
+
 	}
 
-	move::Move Engine::search(core::Position& position) {
-		return move::search(position);
+	void Engine::set_position(core::Position* position) {
+		this->position = position;
 	}
+
+	void Engine::go() {
+		search::go(*position);
+	}
+
+	move::Move Engine::stop() {
+		search::stop();
+		return move::Move(search::get_info().bestMove);
+	}
+
+
 }
