@@ -14,6 +14,14 @@ namespace move {
 	core::Position next_position(core::Position, const move::Move&);
 
 	/*
+	*@brief Returns a position copy with the applied move.
+	* @param position : Chess position.
+	* @param move : Move object that is applied to the position.
+	* @return position
+	*/
+	core::Position next_position(core::Position, const uint32_t& move);
+
+	/*
 	* @brief Applies a move to a position.
 	* @param position:	Chess position.
 	* @param move:		Encoded move that is applied to the position.
