@@ -2,16 +2,28 @@
 
 #include <move/move.h>
 #include <position/position.h>
+#include <search_info.h>
 
 
-namespace move {
+namespace search {
 
-	/**
-	 * @brief Searches the current position and selects the best move.
+	/*
+	 * @brief Searches the current position and updates the best move.
 	 * @param position: Reference to the current chess position to be searched.
 	 *                 The position may be temporarily modified during the search
 	 *                 but will be restored before the function returns.
-	 * @return move
 	 */
-	move::Move search(core::Position& position);
+	void go(core::Position& position);
+
+	/*
+	* @brief Stops the search and returns the best move it has found.
+	* @return best move
+	*/
+	void stop();
+
+	/*
+	* @breif Returns the search info in a struct.
+	* @return search info
+	*/
+	search::SearchInfo get_info();
 }
