@@ -158,3 +158,15 @@ x64/Debug/Fork Engine.pdb
 .vs/Fork Engine/v17/Solution.VC.db-wal
 .vs/slnx.sqlite
 .vs/VSWorkspaceState.json
+*.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/dd386a57e4026e7d/MAIN.ipch
+.vs/Fork Engine/v17/ipch/233d0b5056d097af.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/dd386a57e4026e7d/MAIN.ipch
+.vs/Fork Engine/v17/ipch/233d0b5056d097af.ipch
+.vs/Fork Engine/v17/ipch/233d0b5056d097af.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/dd386a57e4026e7d/MAIN.ipch
+.vs/Fork Engine/v17/ipch/233d0b5056d097af.ipch
+.vs/Fork Engine/v17/ipch/AutoPCH/dd386a57e4026e7d/MAIN.ipch
+uciLib/uciLib.vcxproj
+uciLib/uciLib.vcxproj.filters
+uciLib/uciLib.vcxproj.user
