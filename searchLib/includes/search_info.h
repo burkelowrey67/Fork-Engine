@@ -1,10 +1,12 @@
 #pragma once
+#include <optional>
 
 namespace search {
     struct SearchInfo {
     public:
-        static uint32_t bestMove;
-        static int depth;
-        static int nodesVisited;
+        std::optional<uint32_t> bestMove = std::nullopt;
+        std::optional<int> depth = std::nullopt;
+        std::optional<int> nodesVisited = std::nullopt;
+        std::optional<double> eval = std::nullopt;
     };
 }
