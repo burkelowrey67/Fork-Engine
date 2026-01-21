@@ -108,5 +108,62 @@ namespace core {
 		bool is_empty_square(unsigned int squareIndex);
 		bool is_enemy_square(unsigned int squareIndex);
 
+		/*
+		* @brief Returns the pawn's index into a position's bit board array.
+		* @param color: Color of pawn.
+		* @return index
+		*/
+		static int pawn_index(core::Color color);
+
+		/*
+		* @brief Returns the knight's index into a position's bit board array.
+		* @param color: Color of knight.
+		* @return index
+		*/
+		static int knight_index(core::Color color);
+
+		/*
+		* @brief Returns the bishop's index into a position's bit board array.
+		* @param color: Color of bishop.
+		* @return index
+		*/
+		static int bishop_index(core::Color color);
+
+		/*
+		* @brief Returns the rook's index into a position's bit board array.
+		* @param color: Color of rook.
+		* @return index
+		*/
+		static int rook_index(core::Color color);
+
+		/*
+		* @brief Returns the queen's index into a position's bit board array.
+		* @param color: Color of queen.
+		* @return index
+		*/
+		static int queen_index(core::Color color);
+
+		/*
+		* @brief Returns the pawn's index into a position's bit board array.
+		* @param color: Color of king.
+		* @return index
+		*/
+		static int king_index(core::Color color);
+
+		/*
+		* @brief Returns a piece's index into a position's bit board array.
+		* @param color: Color of piece.
+		* @return index
+		*/
+		static int colored_index(core::Color color, core::piece::PieceType pieceType);
+
+		static int non_colored_index(core::piece::PieceType pieceType);
+
+		/*
+		* @brief Converts bit board array index into a piece type.
+		* @param index: Bit board array index.
+		* @return piece type
+		*/
+		static core::piece::PieceType index_to_piece_type(int index);
 	};
 };

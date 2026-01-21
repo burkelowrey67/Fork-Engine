@@ -86,7 +86,7 @@ namespace move {
 	}
 
 	static void generate_pawn_moves(core::Position& position, std::vector<uint32_t>& moves) {
-		uint64_t pawns = position.bitBoards[core::piece::pawn_index(position.toMove)];
+		uint64_t pawns = position.bitBoards[core::Position::pawn_index(position.toMove)];
 
 		while (pawns) {
 			int squareIndex = core::bit_board::get_first_square_index(pawns);
@@ -103,7 +103,7 @@ namespace move {
 
 	static void generate_piece_moves(core::piece::PieceType pieceType, core::Position& position, std::vector<uint32_t>& moves) {
 		if (pieceType == core::piece::PieceType::Pawn) return;
-		uint64_t pieces = position.bitBoards[core::piece::colored_index(position.toMove, pieceType)];
+		uint64_t pieces = position.bitBoards[core::Position::colored_index(position.toMove, pieceType)];
 
 		while (pieces) {
 			int squareIndex = core::bit_board::get_first_square_index(pieces);

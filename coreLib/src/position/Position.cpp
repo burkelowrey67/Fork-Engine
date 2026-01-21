@@ -312,7 +312,7 @@ namespace core {
 	}
 
 	bool Position::is_square_attacked(unsigned int squareIndex, core::Color attacking) {
-		int lowBound = core::piece::colored_index(attacking, core::piece::PieceType::Pawn);
+		int lowBound = colored_index(attacking, core::piece::PieceType::Pawn);
 		uint64_t squareIndexMap = core::bit_board::square_to_bit_board(squareIndex);
 
 		for (int piece = lowBound; piece < lowBound + 6; piece++) {
@@ -352,5 +352,57 @@ namespace core {
 		case core::Color::Black: return pieceIndexAtSquare[squareIndex] <= 5;
 		default: return false;
 		}
+	}
+
+	static int pawn_index(core::Color color) {
+		return color == core::Color::White ? 0 : 6;
+	}
+
+	static int knight_index(core::Color color) {
+		return color == core::Color::White ? 1 : 7;
+	}
+
+	static int bishop_index(core::Color color) {
+		return color == core::Color::White ? 2 : 8;
+	}
+
+	static int rook_index(core::Color color) {
+		return color == core::Color::White ? 3 : 9;
+	}
+
+	static int queen_index(core::Color color) {
+		return color == core::Color::White ? 4 : 10;
+	}
+
+	static int king_index(core::Color color) {
+		return color == core::Color::White ? 5 : 11;
+	}
+
+	static int colored_index(core::Color color, core::piece::PieceType pieceType) {
+		switch (pieceType)
+		{
+		case core::piece::PieceType::Pawn:
+			return pawn_index(color);
+		case core::piece::PieceType::Knight:
+			return knight_index(color);
+		case core::piece::PieceType::Bishop:
+			return bishop_index(color);
+		case core::piece::PieceType::Rook:
+			return rook_index(color);
+		case core::piece::PieceType::Queen:
+			return queen_index(color);
+		case core::piece::PieceType::King:
+			return king_index(color);
+		default:
+			return -1;
+		}
+	}
+	
+	static int non_colored_index(core::piece::PieceType pieceType) {
+		return colored_index(core::Color::White, pieceType);
+	}
+
+	static core::piece::PieceType index_to_piece_type(int index) {
+		return index > 11 || index < 0 ? core::piece::PieceType::None : static_cast<core::piece::PieceType>(index > 5 ? index - 6 : index);
 	}
 }

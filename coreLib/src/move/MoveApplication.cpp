@@ -40,7 +40,7 @@ namespace move {
 		);
 
 		core::bit_board::move_bit(
-			position.bitBoards[core::piece::colored_index(position.toMove, move::decode::piece_type(move))],
+			position.bitBoards[core::Position::colored_index(position.toMove, move::decode::piece_type(move))],
 			move::decode::start_square(move),
 			move::decode::end_square(move)
 		);
@@ -48,18 +48,18 @@ namespace move {
 
 	static void apply_promotion(core::Position& position, uint32_t& move) {
 		core::bit_board::set_bit_zero(
-			position.bitBoards[core::piece::colored_index(position.toMove, move::decode::piece_type(move))],
+			position.bitBoards[core::Position::colored_index(position.toMove, move::decode::piece_type(move))],
 			move::decode::start_square(move)
 		);
 
 		core::bit_board::set_bit_one(
-			position.bitBoards[core::piece::colored_index(position.toMove, move::decode::promotion_type(move))],
+			position.bitBoards[core::Position::colored_index(position.toMove, move::decode::promotion_type(move))],
 			move::decode::end_square(move)
 		);
 
 		if (move::decode::captured_type(move) != core::piece::PieceType::None) {
 			core::bit_board::set_bit_zero(
-				position.bitBoards[core::piece::colored_index(position.toMove, move::decode::captured_type(move))],
+				position.bitBoards[core::Position::colored_index(position.toMove, move::decode::captured_type(move))],
 				move::decode::end_square(move)
 			);
 		}
@@ -74,7 +74,7 @@ namespace move {
 
 		if (move::decode::captured_type(move) != core::piece::PieceType::None) {
 			core::bit_board::set_bit_zero(
-				position.bitBoards[core::piece::colored_index(position.toMove, move::decode::captured_type(move))],
+				position.bitBoards[core::Position::colored_index(position.toMove, move::decode::captured_type(move))],
 				move::decode::end_square(move)
 			);
 		}
