@@ -81,12 +81,12 @@ namespace uci::fen {
 
     static void parse_en_passant_square(char* sq, core::Position* position) {
         if (*sq == '-') return;
-        int squareIndex = uci::algebraic_to_square_index(std::string(sq, 2));
+        int squareIndex = uci::uci_to_square_index(std::string(sq, 2));
         (*position).enPassantSquare = squareIndex;
     }
 
 	core::Position* parse(char* fen) {
-        if (!std::regex_match(fen, fenRegex)) throw std::invalid_argument("Invalid FEN string");
+        if (!std::regex_match(fen, fenRegex)) return nullptr;
 
         core::Position* position = core::Position::default_position();
         
@@ -98,12 +98,17 @@ namespace uci::fen {
             fen++;
         }
 
-        parse_position_string(words[0], position);
-        (*position).toMove = *words[1] == 'w' ? core::Color::White : core::Color::Black;
-        parse_castling(words[2], position);
-        parse_en_passant_square(words[3], position);
-        (*position).fullMoveClock = *words[4] - '0';
-        (*position).halfMoveClock = *words[5] - '0';
+        try {
+            parse_position_string(words[0], position);
+            (*position).toMove = *words[1] == 'w' ? core::Color::White : core::Color::Black;
+            parse_castling(words[2], position);
+            parse_en_passant_square(words[3], position);
+            (*position).fullMoveClock = *words[4] - '0';
+            (*position).halfMoveClock = *words[5] - '0';
+        }
+        catch (std::invalid_argument e) {
+            return nullptr;
+        }
 
         return position;
 	}
