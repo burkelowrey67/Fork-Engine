@@ -61,6 +61,7 @@ namespace uci::fen {
         }
 
         if (squareIndex != 7) throw std::invalid_argument("Invalid FEN string"); // Square index must end on h1
+        position.update_lookup();
     }
 
     static void parse_castling(const char* castleString, core::Position& position) {
