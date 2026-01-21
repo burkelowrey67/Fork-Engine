@@ -2,12 +2,14 @@
 #include <square.h>
 
 namespace uci {
-    char* square_index_to_uci(const unsigned int index) {
-        if (index > 63) return nullptr;
+
+    std::optional<std::string> square_index_to_uci(unsigned int index) {
+        if (index > 63) return std::nullopt;
 
         char file = 'a' + (index % 8);
         char rank = '1' + (index / 8);
-        return (std::string() + file + rank).data();  // concatenate chars into a string
+
+        return std::string{ file, rank };
     }
 
     int uci_to_square_index(const std::string& sq) {
