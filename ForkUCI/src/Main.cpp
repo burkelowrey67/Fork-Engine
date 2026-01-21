@@ -1,6 +1,6 @@
 #include <string>
 
-int Main() {
+int main() {
 
 	return 0;
 }
