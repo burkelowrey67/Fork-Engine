@@ -2,8 +2,9 @@
 #include <position/position.h>
 #include <string>
 #include <unordered_map>
+#include <optional>
 
-namespace uci::fen {
+namespace uci {
 
 	/**
 	 * @brief Parses a FEN string and constructs a chess position.
@@ -19,7 +20,7 @@ namespace uci::fen {
 	 * @return core::Position The position represented by the FEN string.
 	 *	
 	 */
-	std::optional<core::Position> parse(const std::string& fen);
+	std::optional<core::Position> parse_fen(const std::string& fen);
 
 	/**
 	 * @brief Formats a chess position as a FEN string.
@@ -32,5 +33,5 @@ namespace uci::fen {
 	 *
 	 * @return std::string A FEN string representing the position.
 	 */
-	std::string format(core::Position& position);
+	std::string format_fen(core::Position& position);
 }

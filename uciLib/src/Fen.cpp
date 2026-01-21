@@ -88,7 +88,7 @@ namespace uci::fen {
         position.enPassantSquare = squareIndex;
     }
 
-    std::optional<core::Position> parse(const std::string& fen) {
+    std::optional<core::Position> parse_fen(const std::string& fen) {
         if (!std::regex_match(fen, fenRegex)) return std::nullopt;
 
         core::Position position = core::Position::default_position();
@@ -148,7 +148,7 @@ namespace uci::fen {
         if (!anyCastle) fen += "-";
     }
 
-    std::string format(core::Position& position) {
+    std::string format_fen(core::Position& position) {
         std::string fen = std::string();
         format_position(fen, position); fen += ' ';
         fen += position.toMove == core::Color::White ? "w " : "b ";
