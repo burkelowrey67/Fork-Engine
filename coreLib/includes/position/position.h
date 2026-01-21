@@ -34,7 +34,7 @@ namespace core {
 			int fullMoveClock, int halfMoveClock
 		);
 
-		static Position* default_position();
+		static Position default_position();
 
 		void update_masks();
 		void update_lookup();
