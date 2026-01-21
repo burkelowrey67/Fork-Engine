@@ -5,6 +5,8 @@
 #include <regex>
 #include <vector>
 #include <format>
+#include <array>
+#include <optional>
 
 namespace uci::fen {
 
@@ -32,7 +34,7 @@ namespace uci::fen {
         }
     }
 
-    static void parse_position_string(const char* posString, core::Position* position) {
+    static void parse_position_string(const char* posString, core::Position& position) {
 
         int rank = 0; int file = 0;
         int squareIndex = 0;
@@ -53,7 +55,7 @@ namespace uci::fen {
             else {
                 int index = char_to_index(c);
                 squareIndex = (7 - rank) * 8 + file;  // Map FEN pos to bitboard index
-                (*position).bitBoards[char_to_index(c)] |= core::bit_board::square_to_bit_board(squareIndex);
+                position.bitBoards[char_to_index(c)] |= core::bit_board::square_to_bit_board(squareIndex);
                 file++;
             }
         }
@@ -61,53 +63,54 @@ namespace uci::fen {
         if (squareIndex != 7) throw std::invalid_argument("Invalid FEN string"); // Square index must end on h1
     }
 
-    static void parse_castling(const char* castleString, core::Position* position) {
-        (*position).w_kingSideCastle =  false;
-        (*position).b_kingSideCastle =  false;
-        (*position).w_queenSideCastle = false;
-        (*position).b_queenSideCastle = false;
+    static void parse_castling(const char* castleString, core::Position& position) {
+        position.w_kingSideCastle =  false;
+        position.b_kingSideCastle =  false;
+        position.w_queenSideCastle = false;
+        position.b_queenSideCastle = false;
 
         for (int i = 0; i < 4; i++) {
             switch (*(castleString + i))
             {
-            case 'K': (*position).w_kingSideCastle  = true; break;
-            case 'Q': (*position).w_queenSideCastle = true; break;
-            case 'k': (*position).b_kingSideCastle  = true; break;
-            case 'q': (*position).b_queenSideCastle = true; break;
+            case 'K': position.w_kingSideCastle  = true; break;
+            case 'Q': position.w_queenSideCastle = true; break;
+            case 'k': position.b_kingSideCastle  = true; break;
+            case 'q': position.b_queenSideCastle = true; break;
             default:  return;
             }
         }
     }
 
-    static void parse_en_passant_square(char* sq, core::Position* position) {
+    static void parse_en_passant_square(const char* sq, core::Position& position) {
         if (*sq == '-') return;
         int squareIndex = uci::uci_to_square_index(std::string(sq, 2));
-        (*position).enPassantSquare = squareIndex;
+        position.enPassantSquare = squareIndex;
     }
 
-	core::Position* parse(char* fen) {
-        if (!std::regex_match(fen, fenRegex)) return nullptr;
+	std::optional<core::Position> parse(char* fen) {
+        if (!std::regex_match(fen, fenRegex)) return std::nullopt;
 
-        core::Position* position = core::Position::default_position();
+        core::Position position = core::Position::default_position();
         
-        std::vector<char*> words;
-        words.reserve(6);
+        std::array<const char*, 6> fields{};
+        int field = 0;
+        fields[field++] = fen;
 
-        while (*fen != '\0') {
-            if (*fen == ' ') words.push_back(++fen);
-            fen++;
+        for (const char* p = fen; *p && field < 6; ++p) {
+            if (*p == ' ')
+                fields[field++] = p + 1;
         }
 
         try {
-            parse_position_string(words[0], position);
-            (*position).toMove = *words[1] == 'w' ? core::Color::White : core::Color::Black;
-            parse_castling(words[2], position);
-            parse_en_passant_square(words[3], position);
-            (*position).fullMoveClock = *words[4] - '0';
-            (*position).halfMoveClock = *words[5] - '0';
+            parse_position_string(fields[0], position);
+            position.toMove = *fields[1] == 'w' ? core::Color::White : core::Color::Black;
+            parse_castling(fields[2], position);
+            parse_en_passant_square(fields[3], position);
+            position.halfMoveClock = std::atoi(fields[4]);
+            position.fullMoveClock = std::atoi(fields[5]);
         }
         catch (std::invalid_argument e) {
-            return nullptr;
+            return std::nullopt;
         }
 
         return position;
