@@ -161,16 +161,16 @@ namespace move::mask {
     * @param squareIndex:   Index of square in a bit board [0, 63].
     * @return movement mask
     */
-    constexpr inline uint64_t get_mask(core::piece::PieceType pieceType, unsigned int squareIndex) {
-        if (pieceType == core::piece::PieceType::Pawn) return 0;
+    constexpr inline uint64_t get_mask(core::PieceType pieceType, unsigned int squareIndex) {
+        if (pieceType == core::PieceType::Pawn) return 0;
 
         switch (pieceType)
         {
-        case core::piece::PieceType::Knight:  return KNIGHT_MASKS[squareIndex];
-        case core::piece::PieceType::Bishop:  return BISHOP_MASKS[squareIndex];
-        case core::piece::PieceType::Rook:    return ROOK_MASKS[squareIndex];
-        case core::piece::PieceType::Queen:   return QUEEN_MASKS[squareIndex];
-        case core::piece::PieceType::King:    return KING_MASKS[squareIndex];
+        case core::PieceType::Knight:  return KNIGHT_MASKS[squareIndex];
+        case core::PieceType::Bishop:  return BISHOP_MASKS[squareIndex];
+        case core::PieceType::Rook:    return ROOK_MASKS[squareIndex];
+        case core::PieceType::Queen:   return QUEEN_MASKS[squareIndex];
+        case core::PieceType::King:    return KING_MASKS[squareIndex];
         default:                        return 0;
         }
     }

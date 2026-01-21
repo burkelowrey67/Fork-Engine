@@ -40,8 +40,8 @@ namespace core {
 		void update_lookup();
 
 
-		uint64_t& get_bit_board_ref(core::piece::PieceType, core::Color);
-		uint64_t get_bit_board(core::piece::PieceType pieceType, core::Color color);
+		uint64_t& get_bit_board_ref(core::PieceType, core::Color);
+		uint64_t get_bit_board(core::PieceType pieceType, core::Color color);
 
 		uint64_t& get_friendly_pawn_bit_board_ref();
 		uint64_t& get_friendly_knight_bit_board_ref();
@@ -92,7 +92,7 @@ namespace core {
 		int num_bishops(core::Color);
 		int num_rooks(core::Color);
 		int num_queens(core::Color);
-		int num_pieces(core::piece::PieceType, core::Color);
+		int num_pieces(core::PieceType, core::Color);
 
 		int piece_diff();
 		int pawn_diff();
@@ -155,15 +155,15 @@ namespace core {
 		* @param color: Color of piece.
 		* @return index
 		*/
-		static int colored_index(core::Color color, core::piece::PieceType pieceType);
+		static int colored_index(core::Color color, core::PieceType pieceType);
 
-		static int non_colored_index(core::piece::PieceType pieceType);
+		static int non_colored_index(core::PieceType pieceType);
 
 		/*
 		* @brief Converts bit board array index into a piece type.
 		* @param index: Bit board array index.
 		* @return piece type
 		*/
-		static core::piece::PieceType index_to_piece_type(int index);
+		static core::PieceType index_to_piece_type(int index);
 	};
 };

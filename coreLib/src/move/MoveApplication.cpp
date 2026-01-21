@@ -57,7 +57,7 @@ namespace move {
 			move::decode::end_square(move)
 		);
 
-		if (move::decode::captured_type(move) != core::piece::PieceType::None) {
+		if (move::decode::captured_type(move) != core::PieceType::None) {
 			core::bit_board::set_bit_zero(
 				position.bitBoards[core::Position::colored_index(position.toMove, move::decode::captured_type(move))],
 				move::decode::end_square(move)
@@ -72,7 +72,7 @@ namespace move {
 			move::decode::end_square(move)
 		);
 
-		if (move::decode::captured_type(move) != core::piece::PieceType::None) {
+		if (move::decode::captured_type(move) != core::PieceType::None) {
 			core::bit_board::set_bit_zero(
 				position.bitBoards[core::Position::colored_index(position.toMove, move::decode::captured_type(move))],
 				move::decode::end_square(move)
@@ -101,7 +101,7 @@ namespace move {
 			position.enPassantSquare = -1;
 		}
 
-		else if (move::decode::promotion_type(move) != core::piece::PieceType::None) {
+		else if (move::decode::promotion_type(move) != core::PieceType::None) {
 			apply_promotion(position, move);
 			position.enPassantSquare = -1;
 		}
@@ -116,7 +116,7 @@ namespace move {
 
 			if (
 				int endSquare = move::decode::end_square(move);
-				move::decode::piece_type(move) == core::piece::PieceType::Pawn &&
+				move::decode::piece_type(move) == core::PieceType::Pawn &&
 				endSquare - move::decode::start_square(move) == 18
 				) position.enPassantSquare = endSquare;
 

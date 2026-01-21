@@ -10,15 +10,15 @@ namespace move::mask {
 	static uint64_t bishopLookups[64][512];
 	static uint64_t rookLookups[64][4096];
 
-	uint64_t lookup(core::piece::PieceType pieceType, unsigned int squareIndex, uint64_t allPieces) {
+	uint64_t lookup(core::PieceType pieceType, unsigned int squareIndex, uint64_t allPieces) {
 		switch (pieceType) {
-		case core::piece::PieceType::Knight:  return move::mask::KNIGHT_MASKS[squareIndex];
-		case core::piece::PieceType::Bishop:  return bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)];
-		case core::piece::PieceType::Rook:    return rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::ROOK_MASKS[squareIndex], squareIndex, pieceType)];
-		case core::piece::PieceType::Queen:
+		case core::PieceType::Knight:  return move::mask::KNIGHT_MASKS[squareIndex];
+		case core::PieceType::Bishop:  return bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)];
+		case core::PieceType::Rook:    return rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::ROOK_MASKS[squareIndex], squareIndex, pieceType)];
+		case core::PieceType::Queen:
 			return  bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)] |
 					rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)];
-		case core::piece::PieceType::King:    return move::mask::KING_MASKS[squareIndex];
+		case core::PieceType::King:    return move::mask::KING_MASKS[squareIndex];
 		default: return 0;
 		}
 	}
@@ -53,8 +53,8 @@ namespace move::mask {
 		return blockerConfigs;
 	}
 
-	static void remove_redundant_edge_bits(uint64_t& bitBoard, unsigned int currentSquare, core::piece::PieceType pieceType) {
-		if (pieceType == core::piece::PieceType::Rook) {
+	static void remove_redundant_edge_bits(uint64_t& bitBoard, unsigned int currentSquare, core::PieceType pieceType) {
+		if (pieceType == core::PieceType::Rook) {
 			if ((currentSquare & core::bit_board::FIRST_RANK) != 0) {
 				bitBoard &= ~(
 					core::bit_board::EIGHTH_RANK	| 
@@ -95,17 +95,17 @@ namespace move::mask {
 
 	template
 	<size_t N>
-	static void initialize_lookup(core::piece::PieceType pieceType, uint64_t(&lookup)[64][N]) {
+	static void initialize_lookup(core::PieceType pieceType, uint64_t(&lookup)[64][N]) {
 		for (int squareIndex = 0; squareIndex < 64; squareIndex++) {
 			uint64_t movementMask;
 
-			if (pieceType == core::piece::PieceType::Bishop || pieceType == core::piece::PieceType::Rook) {
+			if (pieceType == core::PieceType::Bishop || pieceType == core::PieceType::Rook) {
 				movementMask = move::mask::get_mask(pieceType, squareIndex);
 			}
 			else return;
 
 			remove_redundant_edge_bits(movementMask, squareIndex, pieceType);
-			int hashBucketSize = pieceType == core::piece::PieceType::Bishop ? 512 : 4096;
+			int hashBucketSize = pieceType == core::PieceType::Bishop ? 512 : 4096;
 			if (hashBucketSize != N) return;
 
 			std::vector<uint64_t> blockerConfigs = create_blocker_configs(movementMask);
@@ -118,7 +118,7 @@ namespace move::mask {
 	}
 
 	void initialize_lookups() {
-		initialize_lookup<512>(core::piece::PieceType::Bishop, bishopLookups);
-		initialize_lookup<4096>(core::piece::PieceType::Rook, rookLookups);
+		initialize_lookup<512>(core::PieceType::Bishop, bishopLookups);
+		initialize_lookup<4096>(core::PieceType::Rook, rookLookups);
 	}
 }

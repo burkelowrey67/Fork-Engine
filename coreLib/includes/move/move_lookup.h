@@ -17,6 +17,6 @@ namespace move::mask {
 	* @param allPieces:	Bit board of all pieces in the position.
 	* @return bit board
 	*/
-	uint64_t lookup(core::piece::PieceType pieceType, unsigned int squareIndex, uint64_t allPieces);
+	uint64_t lookup(core::PieceType pieceType, unsigned int squareIndex, uint64_t allPieces);
 
 }

@@ -38,12 +38,12 @@ namespace move {
 
 	// Generates moves from a movement, given a piece type and a start square. 
 	// Assumes non-pawn piece types.
-	static void generate_moves_from_movement_mask(uint64_t movementMask, core::piece::PieceType pieceType, unsigned int startSquare, core::Position& position, std::vector<uint32_t>& moves) {
-		if (pieceType == core::piece::PieceType::Pawn) return;
+	static void generate_moves_from_movement_mask(uint64_t movementMask, core::PieceType pieceType, unsigned int startSquare, core::Position& position, std::vector<uint32_t>& moves) {
+		if (pieceType == core::PieceType::Pawn) return;
 
 		while (movementMask) {
 			int endSquare = core::bit_board::get_first_square_index(movementMask);
-			core::piece::PieceType pieceAtEndSquare = static_cast<core::piece::PieceType>(position.pieceIndexAtSquare[endSquare]);
+			core::PieceType pieceAtEndSquare = static_cast<core::PieceType>(position.pieceIndexAtSquare[endSquare]);
 			moves.push_back(Move::of(startSquare, endSquare, pieceType, pieceAtEndSquare));
 			core::bit_board::remove_first_one(movementMask);
 		}
@@ -53,35 +53,35 @@ namespace move {
 		while (mask) {
 			unsigned int endSquare = core::bit_board::get_first_square_index(mask);
 
-			core::piece::PieceType capturedType = core::piece::PieceType::None;
+			core::PieceType capturedType = core::PieceType::None;
 
 			if (
 				int pieceIndex = position.pieceIndexAtSquare[endSquare];
 				pieceIndex != -1
 				) {
-				capturedType = static_cast<core::piece::PieceType>(pieceIndex);
+				capturedType = static_cast<core::PieceType>(pieceIndex);
 			}
 
 			if ((core::bit_board::EIGHTH_RANK & core::bit_board::square_to_bit_board(endSquare)) != 0) {
-				for (int p = 0; static_cast<int>(core::piece::PieceType::N); p++) {
-					moves.push_back(move::Move::of(startSquare, endSquare, capturedType, static_cast<core::piece::PieceType>(p), false));
+				for (int p = 0; static_cast<int>(core::PieceType::N); p++) {
+					moves.push_back(move::Move::of(startSquare, endSquare, capturedType, static_cast<core::PieceType>(p), false));
 					continue;
 				}
 			}
 
 			else if (position.enPassantSquare == startSquare + 1 && attacking) {
-				capturedType = static_cast<core::piece::PieceType>(position.pieceIndexAtSquare[startSquare + 1]);
-				moves.push_back(move::Move::of(startSquare, endSquare, capturedType, core::piece::PieceType::None, true));
+				capturedType = static_cast<core::PieceType>(position.pieceIndexAtSquare[startSquare + 1]);
+				moves.push_back(move::Move::of(startSquare, endSquare, capturedType, core::PieceType::None, true));
 				continue;
 			}
 
 			else if (position.enPassantSquare == startSquare - 1 && attacking) {
-				capturedType = static_cast<core::piece::PieceType>(position.pieceIndexAtSquare[startSquare - 1]);
-				moves.push_back(move::Move::of(startSquare, endSquare, capturedType, core::piece::PieceType::None, true));
+				capturedType = static_cast<core::PieceType>(position.pieceIndexAtSquare[startSquare - 1]);
+				moves.push_back(move::Move::of(startSquare, endSquare, capturedType, core::PieceType::None, true));
 				continue;
 			}
 
-			else moves.push_back(move::Move::of(startSquare, endSquare, core::piece::PieceType::Pawn, capturedType));
+			else moves.push_back(move::Move::of(startSquare, endSquare, core::PieceType::Pawn, capturedType));
 		}
 	}
 
@@ -91,18 +91,18 @@ namespace move {
 		while (pawns) {
 			int squareIndex = core::bit_board::get_first_square_index(pawns);
 			uint64_t mask = move::mask::get_pawn_mask(position.toMove, squareIndex, false);
-			generate_moves_from_movement_mask(mask, core::piece::PieceType::Pawn, squareIndex, position, moves);
+			generate_moves_from_movement_mask(mask, core::PieceType::Pawn, squareIndex, position, moves);
 
 			mask = move::mask::get_pawn_mask(position.toMove, squareIndex, true); 
 			mask &= position.enemyPieces;
-			generate_moves_from_movement_mask(mask, core::piece::PieceType::Pawn, squareIndex, position, moves);
+			generate_moves_from_movement_mask(mask, core::PieceType::Pawn, squareIndex, position, moves);
 			core::bit_board::remove_first_one(pawns);
 		}
 	}
 
 
-	static void generate_piece_moves(core::piece::PieceType pieceType, core::Position& position, std::vector<uint32_t>& moves) {
-		if (pieceType == core::piece::PieceType::Pawn) return;
+	static void generate_piece_moves(core::PieceType pieceType, core::Position& position, std::vector<uint32_t>& moves) {
+		if (pieceType == core::PieceType::Pawn) return;
 		uint64_t pieces = position.bitBoards[core::Position::colored_index(position.toMove, pieceType)];
 
 		while (pieces) {
@@ -119,8 +119,8 @@ namespace move {
 		generate_queen_side_castle(position, moves);
 
 
-		for (int p = 1; static_cast<int>(core::piece::PieceType::N); p++) {
-			generate_piece_moves(static_cast<core::piece::PieceType>(p), position, moves);
+		for (int p = 1; static_cast<int>(core::PieceType::N); p++) {
+			generate_piece_moves(static_cast<core::PieceType>(p), position, moves);
 		}
 	}
 }

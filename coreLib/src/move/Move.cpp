@@ -15,9 +15,9 @@ namespace move {
 	
 	uint32_t Move::of(
 		uint8_t startSquare, uint8_t endSquare,
-		core::piece::PieceType pieceType,
-		core::piece::PieceType capturedType,
-		core::piece::PieceType promotionType,
+		core::PieceType pieceType,
+		core::PieceType capturedType,
+		core::PieceType promotionType,
 		CastleType castleType, bool isEnPassant
 	) {
 			
@@ -28,20 +28,20 @@ namespace move {
 	}
 
 	uint32_t Move::of(
-		uint8_t startSquare, uint8_t endSquare, core::piece::PieceType pieceType, core::piece::PieceType capturedType
+		uint8_t startSquare, uint8_t endSquare, core::PieceType pieceType, core::PieceType capturedType
 	) {
-		return of(startSquare, endSquare, pieceType, capturedType, core::piece::PieceType::None, CastleType::None, false);
+		return of(startSquare, endSquare, pieceType, capturedType, core::PieceType::None, CastleType::None, false);
 	}
 
-	uint32_t Move::of(uint8_t startSquare, uint8_t endSquare, core::piece::PieceType pieceType) {
-		return of(startSquare, endSquare, pieceType, core::piece::PieceType::None, core::piece::PieceType::None, CastleType::None, false);
+	uint32_t Move::of(uint8_t startSquare, uint8_t endSquare, core::PieceType pieceType) {
+		return of(startSquare, endSquare, pieceType, core::PieceType::None, core::PieceType::None, CastleType::None, false);
 	}
 
-	uint32_t Move::of(uint8_t startSquare, uint8_t endSquare, core::piece::PieceType capturedType, core::piece::PieceType promotionType, bool isEnPassant) {
-		return of(startSquare, endSquare, core::piece::PieceType::Pawn, capturedType, promotionType, CastleType::None, isEnPassant);
+	uint32_t Move::of(uint8_t startSquare, uint8_t endSquare, core::PieceType capturedType, core::PieceType promotionType, bool isEnPassant) {
+		return of(startSquare, endSquare, core::PieceType::Pawn, capturedType, promotionType, CastleType::None, isEnPassant);
 	}
 
 	uint32_t Move::of(move::CastleType castleType) {
-		return of(0, 0, core::piece::PieceType::None, core::piece::PieceType::None, core::piece::PieceType::None, castleType, false);
+		return of(0, 0, core::PieceType::None, core::PieceType::None, core::PieceType::None, castleType, false);
 	}
 }

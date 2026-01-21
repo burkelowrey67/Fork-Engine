@@ -31,9 +31,9 @@ namespace move {
 		*/
 		static uint32_t of(
 			uint8_t startSquare, uint8_t endSqaure,
-			core::piece::PieceType pieceType,
-			core::piece::PieceType capturedType,
-			core::piece::PieceType promotionType,
+			core::PieceType pieceType,
+			core::PieceType capturedType,
+			core::PieceType promotionType,
 			move::CastleType castleType, bool isEnPassant
 		);
 
@@ -42,7 +42,7 @@ namespace move {
 		*/
 		static uint32_t of(
 			uint8_t startSquare, uint8_t endSquare,
-			core::piece::PieceType pieceType, core::piece::PieceType capturedType
+			core::PieceType pieceType, core::PieceType capturedType
 		);
 
 		/*
@@ -50,14 +50,14 @@ namespace move {
 		*/
 		static uint32_t of(
 			uint8_t startSquare, uint8_t endSquare,
-			core::piece::PieceType capturedType, core::piece::PieceType promotionType,
+			core::PieceType capturedType, core::PieceType promotionType,
 			bool isEnPassant
 		);
 
 		/*
 		* Used for quiet moves.
 		*/
-		static uint32_t of(uint8_t startSquare, uint8_t endSquare, core::piece::PieceType pieceType);
+		static uint32_t of(uint8_t startSquare, uint8_t endSquare, core::PieceType pieceType);
 
 		/*
 		* Used for castles.

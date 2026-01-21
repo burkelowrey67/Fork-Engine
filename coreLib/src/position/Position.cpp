@@ -60,7 +60,7 @@ namespace core {
 		}
 	}
 
-	uint64_t& Position::get_bit_board_ref(core::piece::PieceType pieceType, core::Color color) {
+	uint64_t& Position::get_bit_board_ref(core::PieceType pieceType, core::Color color) {
 		int encoded = (static_cast<int>(color) << 3) | static_cast<int>(pieceType);
 
 		switch (encoded) {
@@ -80,7 +80,7 @@ namespace core {
 		}
 	}
 
-	uint64_t Position::get_bit_board(core::piece::PieceType pieceType, core::Color color) {
+	uint64_t Position::get_bit_board(core::PieceType pieceType, core::Color color) {
 		return get_bit_board_ref(pieceType, color);
 	}
 
@@ -260,18 +260,18 @@ namespace core {
 		return std::popcount(get_queen_bit_board(color));
 	}
 
-	int Position::num_pieces(core::piece::PieceType pieceType, core::Color color) {
+	int Position::num_pieces(core::PieceType pieceType, core::Color color) {
 		switch (pieceType)
 		{
-		case core::piece::PieceType::Pawn:
+		case core::PieceType::Pawn:
 			return num_pawns(color);
-		case core::piece::PieceType::Knight:
+		case core::PieceType::Knight:
 			return num_knights(color);
-		case core::piece::PieceType::Bishop:
+		case core::PieceType::Bishop:
 			return num_bishops(color);
-		case core::piece::PieceType::Rook:
+		case core::PieceType::Rook:
 			return num_rooks(color);
-		case core::piece::PieceType::Queen:
+		case core::PieceType::Queen:
 			return num_queens(color);
 		default:
 			return -1;
@@ -312,7 +312,7 @@ namespace core {
 	}
 
 	bool Position::is_square_attacked(unsigned int squareIndex, core::Color attacking) {
-		int lowBound = colored_index(attacking, core::piece::PieceType::Pawn);
+		int lowBound = colored_index(attacking, core::PieceType::Pawn);
 		uint64_t squareIndexMap = core::bit_board::square_to_bit_board(squareIndex);
 
 		for (int piece = lowBound; piece < lowBound + 6; piece++) {
@@ -320,11 +320,11 @@ namespace core {
 
 			while (attackingPieces) {
 				int currentIndex = core::bit_board::get_first_square_index(attackingPieces);
-				core::piece::PieceType pieceType = static_cast<core::piece::PieceType>(piece);
+				core::PieceType pieceType = static_cast<core::PieceType>(piece);
 
 				uint64_t attackingMask;
 
-				if (pieceType == core::piece::PieceType::Pawn) {
+				if (pieceType == core::PieceType::Pawn) {
 					attackingMask = move::mask::get_pawn_mask(toMove, currentIndex, true);
 				}
 
@@ -378,31 +378,31 @@ namespace core {
 		return color == core::Color::White ? 5 : 11;
 	}
 
-	static int colored_index(core::Color color, core::piece::PieceType pieceType) {
+	static int colored_index(core::Color color, core::PieceType pieceType) {
 		switch (pieceType)
 		{
-		case core::piece::PieceType::Pawn:
+		case core::PieceType::Pawn:
 			return pawn_index(color);
-		case core::piece::PieceType::Knight:
+		case core::PieceType::Knight:
 			return knight_index(color);
-		case core::piece::PieceType::Bishop:
+		case core::PieceType::Bishop:
 			return bishop_index(color);
-		case core::piece::PieceType::Rook:
+		case core::PieceType::Rook:
 			return rook_index(color);
-		case core::piece::PieceType::Queen:
+		case core::PieceType::Queen:
 			return queen_index(color);
-		case core::piece::PieceType::King:
+		case core::PieceType::King:
 			return king_index(color);
 		default:
 			return -1;
 		}
 	}
 	
-	static int non_colored_index(core::piece::PieceType pieceType) {
+	static int non_colored_index(core::PieceType pieceType) {
 		return colored_index(core::Color::White, pieceType);
 	}
 
-	static core::piece::PieceType index_to_piece_type(int index) {
-		return index > 11 || index < 0 ? core::piece::PieceType::None : static_cast<core::piece::PieceType>(index > 5 ? index - 6 : index);
+	static core::PieceType index_to_piece_type(int index) {
+		return index > 11 || index < 0 ? core::PieceType::None : static_cast<core::PieceType>(index > 5 ? index - 6 : index);
 	}
 }
