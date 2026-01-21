@@ -9,7 +9,7 @@ namespace core {
 
 	public:
 
-		uint64_t (&bitBoards)[12];
+		uint64_t bitBoards[12]{ };
 		uint64_t friendlyPieces;
 		uint64_t enemyPieces;
 		uint64_t allPieces;
@@ -27,12 +27,14 @@ namespace core {
 		int halfMoveClock;
 
 		Position(
-			uint64_t (&bitBoards)[12],
+			const uint64_t (&bitBoards)[12],
 			bool w_kingSideCastle, bool b_kingSideCastle, 
 			bool w_queenSideCastle, bool b_queenSideCastle,
 			uint8_t enPassantSquare, core::Color toMove, 
 			int fullMoveClock, int halfMoveClock
 		);
+
+		Position();
 
 		static Position default_position();
 

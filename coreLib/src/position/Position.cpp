@@ -9,17 +9,29 @@
 namespace core {
 
 	Position::Position(
-		uint64_t (&_bitBoards)[12],
+		const uint64_t (&_bitBoards)[12],
 		bool _w_kingSideCastle, bool _b_kingSideCastle,
 		bool _w_queenSideCastle, bool _b_queenSideCastle,
 		uint8_t _enPassantSquare, core::Color _toMove,
 		int _fullMoveClock, int _halfMoveClock
 
-	) : bitBoards(_bitBoards), 
+	) : 
 		w_kingSideCastle(_w_kingSideCastle), w_queenSideCastle(_w_queenSideCastle),
 		b_kingSideCastle(_b_kingSideCastle), b_queenSideCastle(_b_queenSideCastle), 
 		enPassantSquare(_enPassantSquare), toMove(_toMove),
 		fullMoveClock(_fullMoveClock), halfMoveClock(_halfMoveClock)
+	{
+		std::copy(std::begin(_bitBoards), std::end(_bitBoards), bitBoards);
+		update_masks();
+		update_lookup();
+	}
+
+	Position::Position() : 
+		bitBoards{}, 
+		w_kingSideCastle(false), w_queenSideCastle(false),
+		b_kingSideCastle(false), b_queenSideCastle(false),
+		enPassantSquare(0), toMove(core::Color::White),
+		fullMoveClock(1), halfMoveClock(0)
 	{
 		update_masks();
 		update_lookup();
@@ -27,9 +39,9 @@ namespace core {
 
 	Position Position::default_position() {
 		uint64_t bitBoards[12] = {
-			0xFF00, 0x42, 0x24, 0x81, 0x8, 0x10,
-			0xFF000000000000, 0x4200000000000000, 0x2400000000000000, 
-			0x8100000000000000, 0x800000000000000, 0x1000000000000000
+			0xFF00ULL, 0x42ULL, 0x24ULL, 0x81ULL, 0x8ULL, 0x10ULL,
+			0xFF000000000000ULL, 0x4200000000000000ULL, 0x2400000000000000ULL,
+			0x8100000000000000ULL, 0x800000000000000ULL, 0x1000000000000000ULL
 		};
 		return Position(bitBoards, true, true, true, true, -1, core::Color::White, 0, 1);
 	}
