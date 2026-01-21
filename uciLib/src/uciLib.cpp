@@ -55,7 +55,7 @@ namespace uci {
 			}
 
 			else if (tokens[i] == "moves") {
-				if (!position.has_value()) return;
+				if (!position.has_value()) return std::nullopt;
 				
 				for (int j = i; j < tokens.size(); ++j) {
 					std::optional<move::Move> move = parse_uci_move(tokens[j], position.emplace());

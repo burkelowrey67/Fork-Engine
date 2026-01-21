@@ -3,6 +3,7 @@
 #include <move/move.h>
 #include <position/position.h>
 #include <optional>
+#include <string>
 
 namespace uci {
 
@@ -12,5 +13,5 @@ namespace uci {
 	* @param position: The position context.
 	* @return move
 	*/
-	std::optional<move::Move> parse_uci_move(const std::string&, core::Position& position);
+	std::optional<move::Move> parse_uci_move(const std::string& move, const core::Position& position);
 }

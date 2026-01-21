@@ -1,4 +1,5 @@
 #pragma once
+#include "pch.h"
 #include <move_conversion.h>
 #include <regex>
 #include <token.h>
@@ -29,16 +30,18 @@ namespace uci {
 		return move::CastleType::None;
 	}
 
-	std::optional<move::Move> parse_uci_move(const char* move, core::Position& position) {
+	std::optional<move::Move> parse_uci_move(const std::string& move, const core::Position& position) {
 		if (!is_valid_uci_move(move)) return std::nullopt;
 
-		const char* startSquareStr = move;
-		const char* endSquareStr = move + 2;
-		const char* promotionStr = move + 4;
+		const char* start = move.data();
+
+		const char* startSquareStr = start;
+		const char* endSquareStr = start + 2;
+		const char* promotionStr = start + 4;
 
 		int startSquare = uci::uci_to_square_index(std::string(startSquareStr, endSquareStr));
 		int endSquare = uci::uci_to_square_index(std::string(endSquareStr, promotionStr));
-		core::PieceType promotionType = std::strlen(move) == 5 ?
+		core::PieceType promotionType = move.size() == 5 ?
 			char_to_piece_type(promotionStr) : core::PieceType::None;
 
 		core::PieceType pieceType = core::Position::index_to_piece_type(position.pieceIndexAtSquare[startSquare]);
