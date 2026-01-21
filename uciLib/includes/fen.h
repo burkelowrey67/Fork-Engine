@@ -19,7 +19,7 @@ namespace uci::fen {
 	 * @return core::Position The position represented by the FEN string.
 	 *	
 	 */
-	core::Position* parse(const char* fen);
+	std::optional<core::Position> parse(const std::string& fen);
 
 	/**
 	 * @brief Formats a chess position as a FEN string.

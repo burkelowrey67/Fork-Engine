@@ -88,16 +88,16 @@ namespace uci::fen {
         position.enPassantSquare = squareIndex;
     }
 
-	std::optional<core::Position> parse(char* fen) {
+    std::optional<core::Position> parse(const std::string& fen) {
         if (!std::regex_match(fen, fenRegex)) return std::nullopt;
 
         core::Position position = core::Position::default_position();
         
         std::array<const char*, 6> fields{};
         int field = 0;
-        fields[field++] = fen;
+        fields[field++] = fen.data();
 
-        for (const char* p = fen; *p && field < 6; ++p) {
+        for (const char* p = fen.data(); *p && field < 6; ++p) {
             if (*p == ' ')
                 fields[field++] = p + 1;
         }
