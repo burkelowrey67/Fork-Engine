@@ -22,8 +22,9 @@ namespace search {
 		 * @param position: Reference to the current chess position to be searched.
 		 *                 The position may be temporarily modified during the search
 		 *                 but will be restored before the function returns.
+		 * @param searchLimits: Reference to a search limit struct that defines bounds to the search.
 		 */
-		void go(core::Position& position);
+		void go(core::Position& position, const	SearchLimits& searchLimits);
 
 		/*
 		* @brief Stops the search and returns the best move it has found.
