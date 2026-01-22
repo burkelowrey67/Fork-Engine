@@ -4,6 +4,8 @@
 #include <regex>
 #include <token.h>
 #include <square.h>
+#include <move/move_decode.h>
+#include <optional>
 
 namespace uci {
 
@@ -20,6 +22,17 @@ namespace uci {
 		case 'r': return core::PieceType::Rook;
 		case 'q': return core::PieceType::Queen;
 		default:  return core::PieceType::None;
+		}
+	}
+
+	static constexpr char piece_type_to_char(const core::PieceType pieceType) {
+		switch (pieceType) 
+		{
+		case core::PieceType::Knight: return 'n';
+		case core::PieceType::Bishop: return 'b';
+		case core::PieceType::Rook: return 'r';
+		case core::PieceType::Queen: return 'q';
+		default: return '?';
 		}
 	}
 
@@ -52,5 +65,22 @@ namespace uci {
 		// Will add en passant support later, and probably either need to change what information is stored in moves,
 		// or how to figure out if move notation is en passant by the positional context.
 		return move::Move::of(startSquare, endSquare, pieceType, capturedType, promotionType, castleType, false);
+	}
+
+	std::optional<std::string> format_uci_move(move::Move move) {
+		std::string uciMove = std::string();
+
+		core::PieceType pieceType = move::decode::piece_type(move.encodedMove);
+		core::PieceType promotionType = move::decode::piece_type(move.encodedMove);
+
+		std::optional<std::string> startSquare = square_index_to_uci(move::decode::start_square(move.encodedMove));
+		std::optional<std::string> endSquare = square_index_to_uci(move::decode::end_square(move.encodedMove));
+
+		if (char pieceChar = piece_type_to_char(pieceType); pieceChar != '?') uciMove += pieceChar;
+		if (!startSquare.has_value() || !endSquare.has_value()) return std::nullopt;
+
+		uciMove += *startSquare + *endSquare;
+
+		if (char promotionChar = piece_type_to_char(promotionType); promotionChar != '?') uciMove += promotionChar;
 	}
 }

@@ -14,4 +14,11 @@ namespace uci {
 	* @return move
 	*/
 	std::optional<move::Move> parse_uci_move(const std::string& move, const core::Position& position);
+
+	/*
+	* @brief Formats a move::Move object into algebraic chess notation.
+	* @param move: The move object.
+	* @return notation
+	*/
+	std::optional<std::string> format_uci_move(move::Move move);
 }
