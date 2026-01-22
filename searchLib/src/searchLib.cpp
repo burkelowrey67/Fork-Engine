@@ -28,25 +28,33 @@ namespace search {
 
             {
                 std::lock_guard<std::mutex> lock(infoMutex);
-                info.depth = 1;
+                info.depth = 0;
+                info.eval = 0;
+                info.nodesVisited = 0;
             }
 
-            double bestScore = -DBL_MAX;
+            bool white = position.toMove == core::Color::White;
+            double bestScore = white ? -DBL_MAX : DBL_MAX;
+
             // evaluate positions after moves are applied
             for (uint32_t move : moves) {
                 if (st.stop_requested() || info.nodesVisited >= searchLimits.nodes) break;
 
                 core::Position nextPosition = move::next_position(position, move);
                 double score = position::evaluation::eval(nextPosition);
-                // update best move if it gives a higher evaluation
-                if (score > bestScore) {
-                    bestScore = score;
 
+                // update best move if it gives a higher evaluation
+                if (bool white = position.toMove == core::Color::White;
+                    (white && score > bestScore) ||
+                    (!white && score < bestScore)) {
+                    
+                    bestScore = score;
                     std::lock_guard<std::mutex> lock(infoMutex);
                     info.bestMove = move;
+                    info.eval = score;
                 }
                 
-                info.nodesVisited++;
+                info.nodesVisited = info.nodesVisited.emplace() + 1;
             }
             });
     }
