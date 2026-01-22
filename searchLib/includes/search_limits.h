@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 
-namespace uci {
+namespace search {
 	struct SearchLimits {
         int depth = -1;
         int movetime = -1;
