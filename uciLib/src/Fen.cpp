@@ -8,7 +8,7 @@
 #include <array>
 #include <optional>
 
-namespace uci::fen {
+namespace uci {
 
     static const std::regex fenRegex(
         R"(^([pnbrqkPNBRQK1-8]+\/){7}([pnbrqkPNBRQK1-8]+) [wb] [-KQkq]{0,4} [a-h36\-] \d+ \d+$)"
