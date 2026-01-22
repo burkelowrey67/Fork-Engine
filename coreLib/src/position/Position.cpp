@@ -366,31 +366,31 @@ namespace core {
 		}
 	}
 
-	static int pawn_index(core::Color color) {
+	int Position::pawn_index(core::Color color) {
 		return color == core::Color::White ? 0 : 6;
 	}
 
-	static int knight_index(core::Color color) {
+	int Position::knight_index(core::Color color) {
 		return color == core::Color::White ? 1 : 7;
 	}
 
-	static int bishop_index(core::Color color) {
+	int Position::bishop_index(core::Color color) {
 		return color == core::Color::White ? 2 : 8;
 	}
 
-	static int rook_index(core::Color color) {
+	int Position::rook_index(core::Color color) {
 		return color == core::Color::White ? 3 : 9;
 	}
 
-	static int queen_index(core::Color color) {
+	int Position::queen_index(core::Color color) {
 		return color == core::Color::White ? 4 : 10;
 	}
 
-	static int king_index(core::Color color) {
+	int Position::king_index(core::Color color) {
 		return color == core::Color::White ? 5 : 11;
 	}
 
-	static int colored_index(core::Color color, core::PieceType pieceType) {
+	int Position::colored_index(core::Color color, core::PieceType pieceType) {
 		switch (pieceType)
 		{
 		case core::PieceType::Pawn:
@@ -410,11 +410,11 @@ namespace core {
 		}
 	}
 	
-	static int non_colored_index(core::PieceType pieceType) {
+	int Position::non_colored_index(core::PieceType pieceType) {
 		return colored_index(core::Color::White, pieceType);
 	}
 
-	static core::PieceType index_to_piece_type(int index) {
+	core::PieceType Position::index_to_piece_type(int index) {
 		return index > 11 || index < 0 ? core::PieceType::None : static_cast<core::PieceType>(index > 5 ? index - 6 : index);
 	}
 }
