@@ -4,19 +4,26 @@
 #include <position/position.h>
 #include <search_info.h>
 #include <atomic>
-#include <thread>
 #include <mutex>
+#include <search_limits.h>
 
 
 namespace search {
 
 	class Search {
 	private:
+		core::Position position;
+		std::mutex positionMutex;
+
 		SearchInfo info;
 		std::mutex infoMutex;
+
 		std::jthread searchThread;
 
 	public:
+
+		Search() : position(), info(), searchThread() {}
+
 		/*
 		 * @brief Searches the current position and updates the best move.
 		 * @param position: Reference to the current chess position to be searched.

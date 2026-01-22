@@ -15,7 +15,7 @@
 
 namespace uci {
 
-	void parse_go_cmd(SearchLimits& out, const char* params) {
+	void parse_go_cmd(search::SearchLimits& out, const char* params) {
 		std::vector<std::string> tokens;
 		uci::fill_str_tokens(tokens, params);
 

@@ -9,10 +9,9 @@
 #include <eval.h>
 #include <vector>
 #include <cfloat>
-#include <search_limits.h>
 
 namespace search {
-    
+
 
     void Search::go(core::Position& position, const SearchLimits& searchLimits) {
         // Stop previous search if still running
@@ -38,8 +37,8 @@ namespace search {
 
             // evaluate positions after moves are applied
             for (uint32_t move : moves) {
-                if (st.stop_requested() || 
-                    info.nodesVisited >= searchLimits.nodes || 
+                if (st.stop_requested() ||
+                    info.nodesVisited >= searchLimits.nodes ||
                     (searchLimits.depth.has_value() && info.depth.emplace() <= searchLimits.depth)) break;
 
                 core::Position nextPosition = move::next_position(position, move);
@@ -49,13 +48,13 @@ namespace search {
                 if (bool white = position.toMove == core::Color::White;
                     (white && score > bestScore) ||
                     (!white && score < bestScore)) {
-                    
+
                     bestScore = score;
                     std::lock_guard<std::mutex> lock(infoMutex);
                     info.bestMove = move;
                     info.eval = score;
                 }
-                
+
                 info.nodesVisited = info.nodesVisited.emplace() + 1;
             }
             });

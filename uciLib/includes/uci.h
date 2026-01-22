@@ -5,12 +5,12 @@
 namespace uci {
 
 	/*
-	* @brief Parses UCI go command and fills a uci::SearchLimits object.
+	* @brief Parses UCI go command and fills a search::SearchLimits object.
 	* @param out, 
 	* @param params: Parameters' string.
 	* @return std::optional<core::Position>
 	*/
-	void parse_go_cmd(SearchLimits& out, const char* params);
+	void parse_go_cmd(search::SearchLimits& out, const char* params);
 	
 	/*
 	* @brief Parses UCI position command into a core::Position object.
