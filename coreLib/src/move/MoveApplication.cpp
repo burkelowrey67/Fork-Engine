@@ -90,7 +90,7 @@ namespace move {
 		return next_position(position, move.encodedMove);
 	}
 
-	void apply_move(core::Position position, move::Move& move) {
+	void apply_move(core::Position& position, move::Move& move) {
 		apply_move(position, move.encodedMove);
 	}
 
