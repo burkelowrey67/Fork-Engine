@@ -58,12 +58,16 @@ namespace uci {
 				if (!position.has_value()) return std::nullopt;
 				
 				for (int j = i; j < tokens.size(); ++j) {
-					std::optional<move::Move> move = parse_uci_move(tokens[j], position.emplace());
-					if (move.has_value()) move::apply_move(position.emplace(), move.emplace());
+					std::optional<move::Move> move = parse_uci_move(tokens[j], *position);
+					if (move.has_value()) move::apply_move(*position, *move);
 				}
 			}
 		}
 
 		return position;
+	}
+
+	std::string format_best_move(move::Move bestMove) {
+		return std::string();
 	}
 }
