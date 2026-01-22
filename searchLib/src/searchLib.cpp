@@ -69,5 +69,12 @@ namespace search {
         std::lock_guard<std::mutex> lock(infoMutex);
         return info;
     }
+
+    void Search::reset() {
+        info.bestMove = std::nullopt;
+        info.depth = std::nullopt;
+        info.eval = std::nullopt;
+        info.nodesVisited = std::nullopt;
+    }
 }
 

@@ -37,5 +37,10 @@ namespace search {
 		* @return search info
 		*/
 		search::SearchInfo get_info();
+
+		/*
+		* @brief Resets search state. Required if you want to restart the search.
+		*/
+		void reset();
 	};
 }
