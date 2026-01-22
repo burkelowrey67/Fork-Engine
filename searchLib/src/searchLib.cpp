@@ -28,7 +28,7 @@ namespace search {
 
             {
                 std::lock_guard<std::mutex> lock(infoMutex);
-                info.depth = 0;
+                info.depth = 1;
                 info.eval = 0;
                 info.nodesVisited = 0;
             }
@@ -38,7 +38,9 @@ namespace search {
 
             // evaluate positions after moves are applied
             for (uint32_t move : moves) {
-                if (st.stop_requested() || info.nodesVisited >= searchLimits.nodes) break;
+                if (st.stop_requested() || 
+                    info.nodesVisited >= searchLimits.nodes || 
+                    (searchLimits.depth.has_value() && info.depth.emplace() <= searchLimits.depth)) break;
 
                 core::Position nextPosition = move::next_position(position, move);
                 double score = position::evaluation::eval(nextPosition);
