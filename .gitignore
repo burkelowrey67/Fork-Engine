@@ -171,3 +171,11 @@ uciLib/uciLib.vcxproj
 uciLib/uciLib.vcxproj.filters
 uciLib/uciLib.vcxproj.user
 .vs/Fork Engine/v17/ipch/233d0b5056d097af.ipch
+ForkUCI/x64/Debug/ForkUCI.ilk
+ForkUCI/ForkUCI.vcxproj
+ForkUCI/ForkUCI.vcxproj.filters
+coreLib/x64/Debug/moveapplication.obj.enc
+coreLib/x64/Debug/position.obj.enc
+coreLib/x64/Debug/movegeneration.obj.enc
+searchLib/x64/Debug/searchlib.obj.enc
+uciLib/x64/Debug/moveconversion.obj.enc
