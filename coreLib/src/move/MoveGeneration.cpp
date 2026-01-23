@@ -43,13 +43,14 @@ namespace move {
 
 		while (movementMask) {
 			int endSquare = core::bit_board::get_first_square_index(movementMask);
-			core::PieceType pieceAtEndSquare = static_cast<core::PieceType>(position.pieceIndexAtSquare[endSquare]);
+			int pieceIndexAtSquare = position.pieceIndexAtSquare[endSquare];
+			core::PieceType pieceAtEndSquare = static_cast<core::PieceType>(pieceIndexAtSquare);
 			moves.push_back(Move::of(startSquare, endSquare, pieceType, pieceAtEndSquare));
 			core::bit_board::remove_first_one(movementMask);
 		}
 	}
 
-	static void generate_pawn_moves_from_movement_mask(uint64_t& mask, unsigned int startSquare, core::Position& position, std::vector<uint32_t>& moves, bool attacking) {
+	static void generate_pawn_moves_from_movement_mask(uint64_t mask, unsigned int startSquare, core::Position& position, std::vector<uint32_t>& moves, bool attacking) {
 		while (mask) {
 			unsigned int endSquare = core::bit_board::get_first_square_index(mask);
 
@@ -57,7 +58,7 @@ namespace move {
 
 			if (
 				int pieceIndex = position.pieceIndexAtSquare[endSquare];
-				pieceIndex != -1
+				pieceIndex != -1 && attacking
 				) {
 				capturedType = static_cast<core::PieceType>(pieceIndex);
 			}
@@ -82,20 +83,21 @@ namespace move {
 			}
 
 			else moves.push_back(move::Move::of(startSquare, endSquare, core::PieceType::Pawn, capturedType));
+
+			core::bit_board::remove_first_one(mask);
 		}
 	}
 
 	static void generate_pawn_moves(core::Position& position, std::vector<uint32_t>& moves) {
-		uint64_t pawns = position.bitBoards[core::Position::pawn_index(position.toMove)];
+		uint64_t pawns = position.get_friendly_pawn_bit_board();
 
 		while (pawns) {
 			int squareIndex = core::bit_board::get_first_square_index(pawns);
-			uint64_t mask = move::mask::get_pawn_mask(position.toMove, squareIndex, false);
-			generate_moves_from_movement_mask(mask, core::PieceType::Pawn, squareIndex, position, moves);
+			uint64_t mask = move::mask::get_pawn_mask(position.toMove, squareIndex, position.allPieces, position.enemyPieces, false);
+			generate_pawn_moves_from_movement_mask(mask, squareIndex, position, moves, false);
 
-			mask = move::mask::get_pawn_mask(position.toMove, squareIndex, true); 
-			mask &= position.enemyPieces;
-			generate_moves_from_movement_mask(mask, core::PieceType::Pawn, squareIndex, position, moves);
+			mask = move::mask::get_pawn_mask(position.toMove, squareIndex, position.allPieces, position.enemyPieces, true); 
+			generate_pawn_moves_from_movement_mask(mask, squareIndex, position, moves, false);
 			core::bit_board::remove_first_one(pawns);
 		}
 	}
@@ -103,11 +105,11 @@ namespace move {
 
 	static void generate_piece_moves(core::PieceType pieceType, core::Position& position, std::vector<uint32_t>& moves) {
 		if (pieceType == core::PieceType::Pawn) return;
-		uint64_t pieces = position.bitBoards[core::Position::colored_index(position.toMove, pieceType)];
+		uint64_t pieces = position.get_bit_board(pieceType, position.toMove);
 
 		while (pieces) {
 			int squareIndex = core::bit_board::get_first_square_index(pieces);
-			uint64_t mask = move::mask::lookup(pieceType, squareIndex, position.allPieces);
+			uint64_t mask = move::mask::lookup(pieceType, squareIndex, position.allPieces, position.friendlyPieces);
 			generate_moves_from_movement_mask(mask, pieceType, squareIndex, position, moves);
 			core::bit_board::remove_first_one(pieces);
 		}
@@ -119,7 +121,7 @@ namespace move {
 		generate_queen_side_castle(position, moves);
 
 
-		for (int p = 1; static_cast<int>(core::PieceType::N); p++) {
+		for (int p = 1; p < static_cast<int>(core::PieceType::N); p++) {
 			generate_piece_moves(static_cast<core::PieceType>(p), position, moves);
 		}
 	}
