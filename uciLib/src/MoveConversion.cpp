@@ -71,7 +71,7 @@ namespace uci {
 		std::string uciMove = std::string();
 
 		core::PieceType pieceType = move::decode::piece_type(move.encodedMove);
-		core::PieceType promotionType = move::decode::piece_type(move.encodedMove);
+		core::PieceType promotionType = move::decode::promotion_type(move.encodedMove);
 
 		std::optional<std::string> startSquare = square_index_to_uci(move::decode::start_square(move.encodedMove));
 		std::optional<std::string> endSquare = square_index_to_uci(move::decode::end_square(move.encodedMove));
@@ -82,5 +82,7 @@ namespace uci {
 		uciMove += *startSquare + *endSquare;
 
 		if (char promotionChar = piece_type_to_char(promotionType); promotionChar != '?') uciMove += promotionChar;
+
+		return uciMove;
 	}
 }
