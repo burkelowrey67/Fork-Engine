@@ -10,15 +10,15 @@ namespace move::mask {
 	static uint64_t bishopLookups[64][512];
 	static uint64_t rookLookups[64][4096];
 
-	uint64_t lookup(core::PieceType pieceType, unsigned int squareIndex, uint64_t allPieces) {
+	uint64_t lookup(core::PieceType pieceType, unsigned int squareIndex, uint64_t allPieces, uint64_t friendlyPieces) {
 		switch (pieceType) {
-		case core::PieceType::Knight:  return move::mask::KNIGHT_MASKS[squareIndex];
-		case core::PieceType::Bishop:  return bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)];
-		case core::PieceType::Rook:    return rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::ROOK_MASKS[squareIndex], squareIndex, pieceType)];
+		case core::PieceType::Knight:  return move::mask::KNIGHT_MASKS[squareIndex] & ~friendlyPieces;
+		case core::PieceType::Bishop:  return bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)] & ~friendlyPieces;
+		case core::PieceType::Rook:    return rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::ROOK_MASKS[squareIndex], squareIndex, pieceType)] & ~friendlyPieces;
 		case core::PieceType::Queen:
-			return  bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)] |
-					rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)];
-		case core::PieceType::King:    return move::mask::KING_MASKS[squareIndex];
+			return  (bishopLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)] |
+				rookLookups[squareIndex][magic_numbers::get_lookup_index(allPieces & move::mask::BISHOP_MASKS[squareIndex], squareIndex, pieceType)]) & ~friendlyPieces;
+		case core::PieceType::King:    return move::mask::KING_MASKS[squareIndex] & ~friendlyPieces;
 		default: return 0;
 		}
 	}
