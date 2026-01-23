@@ -59,7 +59,7 @@ namespace core {
 	}
 
 	void Position::update_lookup() {
-		std::fill(pieceIndexAtSquare, pieceIndexAtSquare + 64, -1);
+		std::fill(pieceIndexAtSquare, pieceIndexAtSquare + 64, 6);
 
 		for (int p = 0; p < 12; p++) {
 			uint64_t bitBoard = bitBoards[p];
@@ -67,7 +67,7 @@ namespace core {
 			while (bitBoard != 0) {
 				int squareIndex = std::countr_zero(bitBoard);
 				pieceIndexAtSquare[squareIndex] = p;
-				bitBoard &= bitBoard - 1;
+				core::bit_board::remove_first_one(bitBoard);
 			}
 		}
 	}
@@ -337,10 +337,10 @@ namespace core {
 				uint64_t attackingMask;
 
 				if (pieceType == core::PieceType::Pawn) {
-					attackingMask = move::mask::get_pawn_mask(toMove, currentIndex, true);
+					attackingMask = move::mask::get_pawn_mask(toMove, currentIndex, allPieces, enemyPieces, true);
 				}
 
-				else attackingMask = move::mask::lookup(pieceType, currentIndex, allPieces);
+				else attackingMask = move::mask::lookup(pieceType, currentIndex, allPieces, friendlyPieces);
 
 				if ((squareIndexMap & attackingMask)) {
 					return true;
