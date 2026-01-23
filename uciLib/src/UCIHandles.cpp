@@ -41,6 +41,7 @@ namespace uci {
 
 	void handle_stop(search::Search& search) {
 		search.stop();
+
 		if (std::optional<move::Move> bestMove = search.get_info().bestMove; bestMove.has_value()) {
 			if (std::optional<std::string> moveStr = uci::format_uci_move(*bestMove); moveStr.has_value()) {
 				std::cout << "bestmove " << *moveStr << std::flush;
