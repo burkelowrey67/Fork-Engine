@@ -20,13 +20,14 @@ namespace search {
             searchThread.join();
         }
 
-        searchThread = std::jthread([&position, &searchLimits, this](std::stop_token st) {
+        searchThread = std::jthread([&position, searchLimits, this](std::stop_token st) {
             std::vector<uint32_t> moves;
             moves.reserve(256);
             move::generate_pseudolegal_moves(position, moves);
 
             {
                 std::lock_guard<std::mutex> lock(infoMutex);
+
                 info.depth = 1;
                 info.eval = 0;
                 info.nodesVisited = 0;
@@ -39,7 +40,7 @@ namespace search {
             for (uint32_t move : moves) {
                 if (st.stop_requested() ||
                     info.nodesVisited >= searchLimits.nodes ||
-                    (searchLimits.depth.has_value() && info.depth.emplace() <= searchLimits.depth)) break;
+                    (searchLimits.depth.has_value() && info.depth >= *searchLimits.depth)) break;
 
                 core::Position nextPosition = move::next_position(position, move);
                 double score = position::evaluation::eval(nextPosition);
@@ -55,7 +56,7 @@ namespace search {
                     info.eval = score;
                 }
 
-                info.nodesVisited = info.nodesVisited.emplace() + 1;
+                info.nodesVisited = *info.nodesVisited + 1;
             }
             });
     }
