@@ -12,12 +12,12 @@ namespace uci {
 		std::cout <<
 			"id name ForkEngine\n" <<
 			"id author Burke Lowrey\n" <<
-			"uciok" <<
+			"uciok\n" <<
 			std::flush;
 	}
 
 	void handle_isready() {
-		std::cout << "isreadyok" << std::flush;
+		std::cout << "isreadyok\n" << std::flush;
 	}
 
 	void handle_setoption(search::Search& search, std::string& options) {
@@ -44,10 +44,10 @@ namespace uci {
 
 		if (std::optional<move::Move> bestMove = search.get_info().bestMove; bestMove.has_value()) {
 			if (std::optional<std::string> moveStr = uci::format_uci_move(*bestMove); moveStr.has_value()) {
-				std::cout << "bestmove " << *moveStr << std::flush;
+				std::cout << "bestmove " << *moveStr << "\n" << std::flush;
 			}
 			else {
-				std::cout << "bestmove " << 0000 << std::flush;
+				std::cout << "bestmove " << 0000 << "\n" << std::flush;
 			}
 		}
 	}
