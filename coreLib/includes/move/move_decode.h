@@ -10,7 +10,7 @@ namespace move::decode {
 	* @param move: Encoded unsigned 32-bit move integer.
 	* @return start square index
 	*/
-	inline int start_square(const uint32_t& move) {
+	inline int start_square(const uint32_t move) {
 		return move & 0x3F;
 	}
 
@@ -19,7 +19,7 @@ namespace move::decode {
 	* @param move: Encoded unsigned 32-bit move integer.
 	* @return end square index
 	*/
-	inline int end_square(const uint32_t& move) {
+	inline int end_square(const uint32_t move) {
 		return (move >> 6) & 0x3F;
 	}
 
@@ -28,8 +28,8 @@ namespace move::decode {
 	* @param move: Encoded unsigned 32-bit move integer.
 	* @return movee piece type
 	*/
-	inline core::PieceType piece_type(const uint32_t& move) {
-		return static_cast<core::PieceType>((move >> 12) & 0x3);
+	inline core::PieceType piece_type(const uint32_t move) {
+		return static_cast<core::PieceType>((move >> 12) & 0x7);
 	}
 
 	/*
@@ -37,8 +37,8 @@ namespace move::decode {
 	* @param move: Encoded unsigned 32-bit move integer.
 	* @return captured piece type
 	*/
-	inline core::PieceType captured_type(const uint32_t& move) {
-		return static_cast<core::PieceType>((move >> 15) & 0x3);
+	inline core::PieceType captured_type(const uint32_t move) {
+		return static_cast<core::PieceType>((move >> 15) & 0x7);
 	}
 
 	/*
@@ -46,8 +46,8 @@ namespace move::decode {
 	* @param move: Encoded unsigned 32-bit move integer.
 	* @return promotion piece type
 	*/
-	inline core::PieceType promotion_type(const uint32_t& move) {
-		return static_cast<core::PieceType>((move >> 18) & 0x3);
+	inline core::PieceType promotion_type(const uint32_t move) {
+		return static_cast<core::PieceType>((move >> 18) & 0x7);
 	}
 
 	/*
@@ -55,7 +55,7 @@ namespace move::decode {
 	* @param move: Encoded unsigned 32-bit move integer.
 	* @return castle type (king side or queen side)
 	*/
-	inline move::CastleType castle_type(const uint32_t& move) {
+	inline move::CastleType castle_type(const uint32_t move) {
 		return static_cast<move::CastleType>((move >> 21) & 0x3);
 	}
 
@@ -64,7 +64,7 @@ namespace move::decode {
 	* @param move: Encoded unsigned 32-bit move integer.
 	* @return bool
 	*/
-	inline bool is_en_passant(const uint32_t& move) {
-		return (move >> 23);
+	inline bool is_en_passant(const uint32_t move) {
+		return (move >> 23) & 0x1;
 	}
 }
