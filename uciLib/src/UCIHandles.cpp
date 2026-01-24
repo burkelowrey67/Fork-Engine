@@ -8,24 +8,12 @@
 
 namespace uci {
 
-	void handle_uci() {
-		std::cout <<
-			"id name ForkEngine\n" <<
-			"id author Burke Lowrey\n" <<
-			"uciok\n" <<
-			std::flush;
-	}
-
-	void handle_isready() {
-		std::cout << "isreadyok\n" << std::flush;
-	}
-
 	void handle_setoption(search::Search& search, std::string& options) {
 
 	}
 
 	void handle_ucinewgame(search::Search& search) {
-		search.stop();
+		search.stop(false);
 		search.reset();
 	}
 
@@ -40,20 +28,11 @@ namespace uci {
 	}
 
 	void handle_stop(search::Search& search) {
-		search.stop();
-
-		if (std::optional<move::Move> bestMove = search.get_info().bestMove; bestMove.has_value()) {
-			if (std::optional<std::string> moveStr = uci::format_uci_move(*bestMove); moveStr.has_value()) {
-				std::cout << "bestmove " << *moveStr << "\n" << std::flush;
-			}
-			else {
-				std::cout << "bestmove " << 0000 << "\n" << std::flush;
-			}
-		}
+		search.stop(true);
 	}
 
 	void handle_quit(search::Search& search) {
-		search.stop();
+		search.stop(false);
 		exit(0);
 	}
 }

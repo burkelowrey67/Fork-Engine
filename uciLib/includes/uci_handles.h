@@ -2,10 +2,6 @@
 #include <move_search.h>
 
 namespace uci {
-	
-	void handle_uci();
-	
-	void handle_isready();
 
 	void handle_setoption(search::Search& search, std::string& options);
 
