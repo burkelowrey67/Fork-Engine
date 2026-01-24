@@ -124,5 +124,7 @@ namespace move {
 		}
 
 		position.toMove = core::opposite_color(position.toMove);
+		position.update_masks();
+		position.update_lookup();
 	}
 }
