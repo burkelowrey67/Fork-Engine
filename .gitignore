@@ -179,3 +179,15 @@ coreLib/x64/Debug/position.obj.enc
 coreLib/x64/Debug/movegeneration.obj.enc
 searchLib/x64/Debug/searchlib.obj.enc
 uciLib/x64/Debug/moveconversion.obj.enc
+ForkUCI/log.txt
+ForkUCI/ForkUCI.vcxproj
+ForkUCI/ForkUCI.vcxproj.filters
+ForkUCI/x64/Debug/forkuci.obj.enc
+ForkUCI/x64/Release/fork_uci.txt
+ForkUCI/x64/Release/ForkUCI.iobj
+ForkUCI/x64/Release/ForkUCI.ipdb
+ForkUCI/x64/Release/log.txt
+uciLib/x64/Debug/fen.new.obj.enc
+uciLib/x64/Debug/token.obj.enc
+uciLib/x64/Debug/ucihandles.obj.enc
+uciLib/x64/Debug/ucilib.obj.enc
