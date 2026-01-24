@@ -11,6 +11,7 @@
 #include <move/move_application.h>
 #include <cstdlib>
 #include <stdexcept>
+#include <format>
 
 
 namespace uci {
@@ -44,10 +45,14 @@ namespace uci {
 
 			else if (tokens[i] == "fen") {
 				try {
-					const char* start = tokens.at(++i).data();
-					const char* end = tokens.at(i + 6).data();
-					const std::string fen = std::string(start, end);
+					std::string fen = tokens[++i];
+
+					for (int j = i + 1; j < i + 6; j++) {
+						fen += " " + tokens[j];
+					}
+
 					position = parse_fen(fen);
+					i += 6;
 				}
 				catch (std::out_of_range) {
 					continue;
@@ -65,9 +70,5 @@ namespace uci {
 		}
 
 		return position;
-	}
-
-	std::string format_best_move(move::Move bestMove) {
-		return std::string();
 	}
 }
