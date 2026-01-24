@@ -5,7 +5,7 @@
 
 namespace move {
 
-	static void apply_castle(core::Position& position, const uint32_t& move) {
+	static void apply_castle(core::Position& position, const uint32_t move) {
 
 		unsigned int kingStartIndex;
 		unsigned int kingEndIndex;
@@ -33,7 +33,7 @@ namespace move {
 		core::bit_board::move_bit(position.get_friendly_rook_bit_board_ref(), rookStartIndex, rookEndIndex);
 	}
 
-	static void apply_en_passant(core::Position& position, const uint32_t& move) {
+	static void apply_en_passant(core::Position& position, const uint32_t move) {
 		core::bit_board::set_bit_zero(
 			position.bitBoards[position.pieceIndexAtSquare[position.enPassantSquare]], 
 			position.enPassantSquare
@@ -46,7 +46,7 @@ namespace move {
 		);
 	}
 
-	static void apply_promotion(core::Position& position, const uint32_t& move) {
+	static void apply_promotion(core::Position& position, const uint32_t move) {
 		core::bit_board::set_bit_zero(
 			position.bitBoards[core::Position::colored_index(position.toMove, move::decode::piece_type(move))],
 			move::decode::start_square(move)
@@ -65,7 +65,7 @@ namespace move {
 		}
 	}
 
-	static void apply_normal_move(core::Position& position, const uint32_t& move) {
+	static void apply_normal_move(core::Position& position, const uint32_t move) {
 		core::bit_board::move_bit(
 			position.get_bit_board_ref(move::decode::piece_type(move), position.toMove),
 			move::decode::start_square(move),
@@ -80,21 +80,21 @@ namespace move {
 		}
 	}
 
-	core::Position next_position(core::Position position, const uint32_t& move) {
+	core::Position next_position(core::Position position, const uint32_t move) {
 		core::Position copy = core::Position(position);
 		apply_move(copy, move);
 		return copy;
 	}
 
-	core::Position next_position(core::Position& position, const move::Move& move) {
+	core::Position next_position(core::Position& position, const move::Move move) {
 		return next_position(position, move.encodedMove);
 	}
 
-	void apply_move(core::Position& position, const move::Move& move) {
+	void apply_move(core::Position& position, const move::Move move) {
 		apply_move(position, move.encodedMove);
 	}
 
-	void apply_move(core::Position& position, const uint32_t& move) {
+	void apply_move(core::Position& position, const uint32_t move) {
 
 		if (move::decode::castle_type(move) != move::CastleType::None) {
 			apply_castle(position, move);
