@@ -92,7 +92,7 @@ namespace uci {
     std::optional<core::Position> parse_fen(const std::string& fen) {
         if (!std::regex_match(fen, fenRegex)) return std::nullopt;
 
-        core::Position position = core::Position::default_position();
+        core::Position position = core::Position();
         std::vector<std::string> fields;
         uci::fill_str_tokens(fields, fen.data());
 
