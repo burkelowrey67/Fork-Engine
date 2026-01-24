@@ -7,11 +7,12 @@
 #include <format>
 #include <array>
 #include <optional>
+#include <token.h>
 
 namespace uci {
 
     static const std::regex fenRegex(
-        R"(^([pnbrqkPNBRQK1-8]+\/){7}([pnbrqkPNBRQK1-8]+) [wb] [-KQkq]{0,4} [a-h36\-] \d+ \d+$)"
+        R"(^([pnbrqkPNBRQK1-8]+\/){7}[pnbrqkPNBRQK1-8]+ [wb] (K?Q?k?q?|-) (-|[a-h][36]) \d+ \d+$)"
     );
 
 	static constexpr int char_to_index(const char c) {
@@ -92,23 +93,16 @@ namespace uci {
         if (!std::regex_match(fen, fenRegex)) return std::nullopt;
 
         core::Position position = core::Position::default_position();
-        
-        std::array<const char*, 6> fields{};
-        int field = 0;
-        fields[field++] = fen.data();
-
-        for (const char* p = fen.data(); *p && field < 6; ++p) {
-            if (*p == ' ')
-                fields[field++] = p + 1;
-        }
+        std::vector<std::string> fields;
+        uci::fill_str_tokens(fields, fen.data());
 
         try {
-            parse_position_string(fields[0], position);
-            position.toMove = *fields[1] == 'w' ? core::Color::White : core::Color::Black;
-            parse_castling(fields[2], position);
-            parse_en_passant_square(fields[3], position);
-            position.halfMoveClock = std::atoi(fields[4]);
-            position.fullMoveClock = std::atoi(fields[5]);
+            parse_position_string(fields[0].data(), position);
+            position.toMove = *fields[1].data() == 'w' ? core::Color::White : core::Color::Black;
+            parse_castling(fields[2].data(), position);
+            parse_en_passant_square(fields[3].data(), position);
+            position.halfMoveClock = std::atoi(fields[4].data());
+            position.fullMoveClock = std::atoi(fields[5].data());
         }
         catch (std::invalid_argument e) {
             return std::nullopt;
