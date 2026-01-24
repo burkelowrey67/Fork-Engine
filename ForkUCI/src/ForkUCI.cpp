@@ -73,7 +73,7 @@ namespace fork {
     }
 
     void ForkUCI::out(const char* out, bool flush) {
-        if (flush) std::cout << out << "\n";
+        if (!flush) std::cout << out << "\n";
         else std::cout << out << "\n" << std::flush;
         log_io(out, false);
     }
