@@ -45,6 +45,7 @@ namespace fork {
             uci::handle_stop(search);
         }
         else if (cmd == "quit") {
+            clear_log();
             exit(0);
         }
     }
@@ -88,5 +89,10 @@ namespace fork {
     void ForkUCI::log_io(const char* message, bool in) {
         const char* tag = in ? "GUI -> IN" : "FORK ENGINE -> OUT";
         log(message, tag);
+    }
+
+    void ForkUCI::clear_log() {
+        std::ofstream log("fork_uci.log", std::ios::out | std::ios::trunc);
+        log.close();
     }
 }

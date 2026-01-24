@@ -16,6 +16,7 @@ namespace fork {
 
 		void log(const char* message, const char* tag);
 		void log_io(const char* message, bool in);
+		void clear_log();
 
 	public:
 		
