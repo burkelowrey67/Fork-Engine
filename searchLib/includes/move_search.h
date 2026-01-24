@@ -11,7 +11,13 @@
 namespace search {
 
 	class Search {
+	public:
+		std::mutex searchDoneMutex;
+		std::condition_variable cv;
+		bool searchDone = false;
+
 	private:
+
 		core::Position position;
 		std::mutex positionMutex;
 
@@ -19,6 +25,9 @@ namespace search {
 		std::mutex infoMutex;
 
 		std::jthread searchThread;
+
+		void reset_search_info();
+		void reset_search_done();
 
 	public:
 
@@ -35,9 +44,9 @@ namespace search {
 
 		/*
 		* @brief Stops the search and returns the best move it has found.
-		* @return best move
+		* @param notifyListeners: True if notifying search listeners is desired.
 		*/
-		void stop();
+		void stop(bool notifyListeners);
 
 		/*
 		* @breif Returns the search info in a struct.

@@ -14,6 +14,7 @@ namespace search {
 
 
     void Search::go(core::Position& position, const SearchLimits& searchLimits) {
+
         // Stop previous search if still running
         if (searchThread.joinable()) {
             searchThread.request_stop();
@@ -58,11 +59,28 @@ namespace search {
 
                 info.nodesVisited = *info.nodesVisited + 1;
             }
+
+            {
+                std::lock_guard<std::mutex> lock(searchDoneMutex);
+                searchDone = true;
+            }
+            cv.notify_one();
             });
     }
 
-    void Search::stop() {
+    void Search::stop(bool notifyListeners) {
         if (searchThread.joinable()) searchThread.request_stop();
+
+        reset_search_info();
+
+        {
+            std::lock_guard<std::mutex> lock(searchDoneMutex);
+            searchDone = true;
+        }
+        
+        if (notifyListeners)  {
+            cv.notify_one();
+        }
     }
 
     search::SearchInfo Search::get_info() {
@@ -71,10 +89,21 @@ namespace search {
     }
 
     void Search::reset() {
+        reset_search_info();
+        reset_search_done();
+    }
+
+    void Search::reset_search_info() {
+        std::lock_guard<std::mutex> lock(infoMutex);
         info.bestMove = std::nullopt;
         info.depth = std::nullopt;
         info.eval = std::nullopt;
         info.nodesVisited = std::nullopt;
+    }
+
+    void Search::reset_search_done() {
+        std::lock_guard<std::mutex> lock(searchDoneMutex);
+        searchDone = false;
     }
 }
 
