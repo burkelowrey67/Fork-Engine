@@ -70,13 +70,11 @@ namespace uci {
 	std::optional<std::string> format_uci_move(move::Move move) {
 		std::string uciMove = std::string();
 
-		core::PieceType pieceType = move::decode::piece_type(move.encodedMove);
 		core::PieceType promotionType = move::decode::promotion_type(move.encodedMove);
 
 		std::optional<std::string> startSquare = square_index_to_uci(move::decode::start_square(move.encodedMove));
 		std::optional<std::string> endSquare = square_index_to_uci(move::decode::end_square(move.encodedMove));
 
-		if (char pieceChar = piece_type_to_char(pieceType); pieceChar != '?') uciMove += pieceChar;
 		if (!startSquare.has_value() || !endSquare.has_value()) return std::nullopt;
 
 		uciMove += *startSquare + *endSquare;
