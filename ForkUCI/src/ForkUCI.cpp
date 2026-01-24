@@ -67,7 +67,7 @@ namespace fork {
                 out(moveStr.data(), true);
             } 
             else {
-                out("0000", false);
+                out("bestmove 0000", false);
             }
         });
     }
