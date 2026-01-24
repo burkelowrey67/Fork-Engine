@@ -7,6 +7,7 @@
 #include <fstream>
 #include <format>
 #include <ios>
+#include <uci.h>
 
 namespace fork {
 
@@ -38,6 +39,7 @@ namespace fork {
             uci::handle_position(position, cmd);
         }
         else if (cmd.rfind("go", 0) == 0) {
+            search.reset_data();
             start_search_events_jthread();
             uci::handle_go(search, position, cmd);
         }
@@ -57,18 +59,39 @@ namespace fork {
             searchEventsThread.join();
         }
         
-        searchEventsThread = std::jthread([this] () {
-            {
-                std::unique_lock<std::mutex> lock(search.searchDoneMutex);
-                search.cv.wait(lock, [&] { return search.searchDone; });
-            }
 
-            if (std::optional<uint32_t> bestMove = search.get_info().bestMove; bestMove.has_value()) {
-                std::string moveStr = std::format("bestmove {}", *uci::format_uci_move(move::Move(*bestMove)));
-                out(moveStr.data(), true);
-            } 
-            else {
-                out("bestmove 0000", false);
+
+        searchEventsThread = std::jthread([this](std::stop_token st) {
+            while (!st.stop_requested()) {
+
+                uint64_t lastSeenVersion = 0;
+
+
+                std::unique_lock<std::mutex> lock(search.m);
+                search.cv.wait(lock, [&] {
+                    return st.stop_requested()
+                        || search.data.searchDone
+                        || search.data.infoVersion != lastSeenVersion;
+                    });
+
+                if (st.stop_requested()) return;
+
+                out(uci::format_search_info(search.data.info).data(), false);
+
+                lastSeenVersion = search.data.infoVersion;
+
+
+                if (search.data.searchDone) {
+                    if (auto bestMove = search.data.info.bestMove) {
+                        out(std::format("bestmove {}",
+                            *uci::format_uci_move(move::Move(*bestMove))).c_str(), true);
+                    }
+                    else {
+                        out("bestmove 0000", false);
+                    }
+
+                    return;
+                }
             }
         });
     }

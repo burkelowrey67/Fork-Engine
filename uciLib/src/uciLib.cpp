@@ -71,4 +71,12 @@ namespace uci {
 
 		return position;
 	}
+
+	std::string format_search_info(search::SearchInfo& info) {
+		std::string infoStr = "info";
+		if (info.depth.has_value())			infoStr += std::format(" depth {}", *info.depth);
+		if (info.nodesVisited.has_value())	infoStr += std::format(" nodes {}", *info.nodesVisited);
+		if (info.eval.has_value())			infoStr += std::format(" score cp {}", *info.eval);
+		return infoStr;
+	}
 }

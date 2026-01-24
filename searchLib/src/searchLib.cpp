@@ -27,21 +27,24 @@ namespace search {
             move::generate_pseudolegal_moves(position, moves);
 
             {
-                std::lock_guard<std::mutex> lock(infoMutex);
-
-                info.depth = 1;
-                info.eval = 0;
-                info.nodesVisited = 0;
+                std::lock_guard<std::mutex> lock(m);
+                data.info.depth = 1;
+                data.info.eval = 0;
+                data.info.nodesVisited = 0;
+                ++data.infoVersion;
             }
 
             bool white = position.toMove == core::Color::White;
             double bestScore = white ? -DBL_MAX : DBL_MAX;
 
             // evaluate positions after moves are applied
-            for (uint32_t move : moves) {
+                for (uint32_t move : moves) {
+
+                std::unique_lock<std::mutex> lock(m);
                 if (st.stop_requested() ||
-                    info.nodesVisited >= searchLimits.nodes ||
-                    (searchLimits.depth.has_value() && info.depth >= *searchLimits.depth)) break;
+                        data.info.nodesVisited >= searchLimits.nodes ||
+                        (searchLimits.depth.has_value() && data.info.depth >= *searchLimits.depth)) break;
+                lock.unlock();
 
                 core::Position nextPosition = move::next_position(position, move);
                 double score = position::evaluation::eval(nextPosition);
@@ -52,17 +55,20 @@ namespace search {
                     (!white && score < bestScore)) {
 
                     bestScore = score;
-                    std::lock_guard<std::mutex> lock(infoMutex);
-                    info.bestMove = move;
-                    info.eval = score;
+                    std::lock_guard<std::mutex> lock(m);
+                    data.info.bestMove = move;
+                    data.info.eval = score;
                 }
 
-                info.nodesVisited = *info.nodesVisited + 1;
+                lock.lock();
+                data.info.nodesVisited = *data.info.nodesVisited + 1;
+                ++data.infoVersion;
+                lock.unlock();
             }
 
             {
-                std::lock_guard<std::mutex> lock(searchDoneMutex);
-                searchDone = true;
+                std::lock_guard<std::mutex> lock(m);
+                data.searchDone = true;
             }
             cv.notify_one();
             });
@@ -70,40 +76,38 @@ namespace search {
 
     void Search::stop(bool notifyListeners) {
         if (searchThread.joinable()) searchThread.request_stop();
-
-        reset_search_info();
-
-        {
-            std::lock_guard<std::mutex> lock(searchDoneMutex);
-            searchDone = true;
-        }
         
         if (notifyListeners)  {
+            std::lock_guard<std::mutex> lock(m);
+            data.searchDone = true;
             cv.notify_one();
         }
     }
 
     search::SearchInfo Search::get_info() {
-        std::lock_guard<std::mutex> lock(infoMutex);
-        return info;
+        std::lock_guard<std::mutex> lock(m);
+        return data.info;
     }
 
-    void Search::reset() {
+    void Search::reset_search_state() {
+    }
+
+    void Search::reset_data() {
         reset_search_info();
         reset_search_done();
     }
 
     void Search::reset_search_info() {
-        std::lock_guard<std::mutex> lock(infoMutex);
-        info.bestMove = std::nullopt;
-        info.depth = std::nullopt;
-        info.eval = std::nullopt;
-        info.nodesVisited = std::nullopt;
+        std::lock_guard<std::mutex> lock(m);
+        data.info.bestMove = std::nullopt;
+        data.info.depth = std::nullopt;
+        data.info.eval = std::nullopt;
+        data.info.nodesVisited = std::nullopt;
     }
 
     void Search::reset_search_done() {
-        std::lock_guard<std::mutex> lock(searchDoneMutex);
-        searchDone = false;
+        std::lock_guard<std::mutex> lock(m);
+        data.searchDone = false;
     }
 }
 

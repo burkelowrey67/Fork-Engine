@@ -1,6 +1,7 @@
 #pragma once
 #include <fen.h>
 #include <search_limits.h>
+#include <search_info.h>
 
 namespace uci {
 
@@ -18,4 +19,11 @@ namespace uci {
 	* @return std::optional<core::Position>
 	*/
 	std::optional<core::Position> parse_position_cmd(const char* params);
+
+	/*
+	* @brief Formats search info into a proper UCI info message.
+	* @param info: Search info.
+	* @return UCI info message
+	*/
+	std::string format_search_info(search::SearchInfo& info);
 }

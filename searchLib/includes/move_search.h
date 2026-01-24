@@ -6,23 +6,19 @@
 #include <atomic>
 #include <mutex>
 #include <search_limits.h>
+#include <search_data.h>
 
 
 namespace search {
 
 	class Search {
+
 	public:
-		std::mutex searchDoneMutex;
+		std::mutex m;
 		std::condition_variable cv;
-		bool searchDone = false;
+		SearchData data;
 
 	private:
-
-		core::Position position;
-		std::mutex positionMutex;
-
-		SearchInfo info;
-		std::mutex infoMutex;
 
 		std::jthread searchThread;
 
@@ -31,7 +27,7 @@ namespace search {
 
 	public:
 
-		Search() : position(), info(), searchThread() {}
+		Search() : data(), searchThread() {}
 
 		/*
 		 * @brief Searches the current position and updates the best move.
@@ -57,6 +53,11 @@ namespace search {
 		/*
 		* @brief Resets search state. Required if you want to restart the search.
 		*/
-		void reset();
+		void reset_search_state();
+
+		/*
+		* @brief Resets search data.
+		*/
+		void reset_data();
 	};
-}
+}	

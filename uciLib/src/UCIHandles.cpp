@@ -14,7 +14,8 @@ namespace uci {
 
 	void handle_ucinewgame(search::Search& search) {
 		search.stop(false);
-		search.reset();
+		search.reset_search_state();
+		search.reset_data();
 	}
 
 	void handle_position(core::Position& out, const std::string& params) {
