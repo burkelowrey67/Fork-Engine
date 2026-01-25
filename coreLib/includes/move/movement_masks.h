@@ -137,7 +137,7 @@ namespace move::mask {
         case core::PieceType::Knight:  return KNIGHT_MASKS[squareIndex];
         case core::PieceType::Bishop:  return BISHOP_MASKS[squareIndex];
         case core::PieceType::Rook:    return ROOK_MASKS[squareIndex];
-        case core::PieceType::Queen:   return QUEEN_MASKS[squareIndex];
+        case core::PieceType::Queen:   return BISHOP_MASKS[squareIndex] | ROOK_MASKS[squareIndex];
         case core::PieceType::King:    return KING_MASKS[squareIndex];
         default:                        return 0;
         }
