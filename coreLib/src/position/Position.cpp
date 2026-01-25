@@ -59,7 +59,7 @@ namespace core {
 	}
 
 	void Position::update_lookup() {
-		std::fill(pieceIndexAtSquare, pieceIndexAtSquare + 64, 6);
+		std::fill(pieceIndexAtSquare, pieceIndexAtSquare + 64, -1);
 
 		for (int p = 0; p < 12; p++) {
 			uint64_t bitBoard = bitBoards[p];

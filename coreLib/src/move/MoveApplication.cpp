@@ -72,9 +72,9 @@ namespace move {
 			move::decode::end_square(move)
 		);
 
-		if (move::decode::captured_type(move) != core::PieceType::None) {
+		if (core::PieceType captured = move::decode::captured_type(move); captured != core::PieceType::None) {
 			core::bit_board::set_bit_zero(
-				position.bitBoards[core::Position::colored_index(position.toMove, move::decode::captured_type(move))],
+				position.get_bit_board_ref(captured, core::opposite_color(position.toMove)),
 				move::decode::end_square(move)
 			);
 		}

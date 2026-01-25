@@ -43,8 +43,7 @@ namespace move {
 
 		while (movementMask) {
 			int endSquare = core::bit_board::get_first_square_index(movementMask);
-			int pieceIndexAtSquare = position.pieceIndexAtSquare[endSquare];
-			core::PieceType pieceAtEndSquare = static_cast<core::PieceType>(pieceIndexAtSquare);
+			core::PieceType pieceAtEndSquare = core::Position::index_to_piece_type(position.pieceIndexAtSquare[endSquare]);
 			moves.push_back(Move::of(startSquare, endSquare, pieceType, pieceAtEndSquare));
 			core::bit_board::remove_first_one(movementMask);
 		}
