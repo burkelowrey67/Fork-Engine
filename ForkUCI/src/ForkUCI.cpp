@@ -8,6 +8,7 @@
 #include <format>
 #include <ios>
 #include <uci.h>
+#include <move/move_lookup.h>
 
 namespace fork {
 
@@ -27,6 +28,7 @@ namespace fork {
             out("id name ForkEngine\nid author Burke Lowrey\nuciok", true);
         }
         else if (cmd == "isready") {
+            move::mask::initialize_lookups();
             out("readyok", true);
         }
         else if (cmd.rfind("setoption", 0) == 0) {
