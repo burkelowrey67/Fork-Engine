@@ -26,7 +26,7 @@ namespace move::mask {
 	static std::vector<uint64_t> create_blocker_configs(uint64_t movementMask) {
 
 		int numSquareIndices = std::popcount(movementMask);
-		std::vector<uint64_t> moveSquareIndices;
+		std::vector<int> moveSquareIndices;
 		moveSquareIndices.reserve(numSquareIndices);
 
 		while (movementMask) {
@@ -53,9 +53,9 @@ namespace move::mask {
 		return blockerConfigs;
 	}
 
-	static void remove_redundant_edge_bits(uint64_t& bitBoard, unsigned int currentSquare, core::PieceType pieceType) {
+	static void remove_redundant_edge_bits(uint64_t bitBoard, unsigned int currentSquare, core::PieceType pieceType) {
 		if (pieceType == core::PieceType::Rook) {
-			if ((currentSquare & core::bit_board::FIRST_RANK) != 0) {
+			if (currentSquare & core::bit_board::FIRST_RANK) {
 				bitBoard &= ~(
 					core::bit_board::EIGHTH_RANK	| 
 					core::bit_board::SW_CORNER		| 
@@ -63,7 +63,7 @@ namespace move::mask {
 					);
 			}
 
-			if ((currentSquare & core::bit_board::EIGHTH_RANK) != 0) {
+			if (currentSquare & core::bit_board::EIGHTH_RANK) {
 				bitBoard &= ~(
 					core::bit_board::FIRST_RANK	| 
 					core::bit_board::NW_CORNER		| 
@@ -71,7 +71,7 @@ namespace move::mask {
 					);
 			}
 
-			if ((currentSquare & core::bit_board::A_FILE) != 0) {
+			if (currentSquare & core::bit_board::A_FILE) {
 				bitBoard &= ~(
 					core::bit_board::H_FILE		|
 					core::bit_board::NW_CORNER		|
@@ -79,7 +79,7 @@ namespace move::mask {
 					);
 			}
 
-			if ((currentSquare & core::bit_board::H_FILE) != 0) {
+			if (currentSquare & core::bit_board::H_FILE) {
 				bitBoard &= ~(
 					core::bit_board::A_FILE		| 
 					core::bit_board::NE_CORNER		| 
@@ -89,7 +89,7 @@ namespace move::mask {
 		}
 
 		else {
-			bitBoard ^= core::bit_board::EDGE_MASK;
+			bitBoard &= ~core::bit_board::EDGE_MASK;
 		}
 	}
 
@@ -99,10 +99,6 @@ namespace move::mask {
 		if (pieceType != core::PieceType::Bishop && pieceType == core::PieceType::Rook) return;
 
 		for (int squareIndex = 0; squareIndex < 64; squareIndex++) {
-			if (squareIndex == 3) {
-				squareIndex = 3;
-			}
-
 			uint64_t movementMask = move::mask::get_mask(pieceType, squareIndex);
 
 			remove_redundant_edge_bits(movementMask, squareIndex, pieceType);
