@@ -52,7 +52,7 @@ namespace uci {
 					}
 
 					position = parse_fen(fen);
-					i += 6;
+					i += 5;
 				}
 				catch (std::out_of_range) {
 					continue;
@@ -62,7 +62,7 @@ namespace uci {
 			else if (tokens[i] == "moves") {
 				if (!position.has_value()) return std::nullopt;
 				
-				for (int j = i; j < tokens.size(); ++j) {
+				for (int j = ++i; j < tokens.size(); j++) {
 					std::optional<move::Move> move = parse_uci_move(tokens[j], *position);
 					if (move.has_value()) move::apply_move(*position, *move);
 				}

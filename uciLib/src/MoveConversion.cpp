@@ -9,8 +9,9 @@
 
 namespace uci {
 
+	static const std::regex uci_regex(R"(^[a-h][1-8][a-h][1-8][qrbn]?$)", std::regex_constants::ECMAScript);
+
 	static bool is_valid_uci_move(const std::string& move) {
-		static const std::regex uci_regex(R"(^[a-h][1-8][a-h][1-8][qrbn]?$)", std::regex_constants::ECMAScript);
 		return std::regex_match(move, uci_regex);
 	}
 
