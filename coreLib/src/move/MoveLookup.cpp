@@ -96,17 +96,16 @@ namespace move::mask {
 	template
 	<size_t N>
 	static void initialize_lookup(core::PieceType pieceType, uint64_t(&lookup)[64][N]) {
-		for (int squareIndex = 0; squareIndex < 64; squareIndex++) {
-			uint64_t movementMask;
+		if (pieceType != core::PieceType::Bishop && pieceType == core::PieceType::Rook) return;
 
-			if (pieceType == core::PieceType::Bishop || pieceType == core::PieceType::Rook) {
-				movementMask = move::mask::get_mask(pieceType, squareIndex);
+		for (int squareIndex = 0; squareIndex < 64; squareIndex++) {
+			if (squareIndex == 3) {
+				squareIndex = 3;
 			}
-			else return;
+
+			uint64_t movementMask = move::mask::get_mask(pieceType, squareIndex);
 
 			remove_redundant_edge_bits(movementMask, squareIndex, pieceType);
-			int hashBucketSize = pieceType == core::PieceType::Bishop ? 512 : 4096;
-			if (hashBucketSize != N) return;
 
 			std::vector<uint64_t> blockerConfigs = create_blocker_configs(movementMask);
 
