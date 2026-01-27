@@ -38,7 +38,7 @@ namespace search {
             double bestScore = white ? -DBL_MAX : DBL_MAX;
 
             // evaluate positions after moves are applied
-                for (uint32_t move : moves) {
+            for (uint32_t move : moves) {
 
                 std::unique_lock<std::mutex> lock(m);
                 if (st.stop_requested() ||
@@ -47,6 +47,7 @@ namespace search {
                 lock.unlock();
 
                 core::Position nextPosition = move::next_position(position, move);
+                if (nextPosition.is_enemy_king_attacked()) continue;
                 double score = position::evaluation::eval(nextPosition);
 
                 // update best move if it gives a higher evaluation
