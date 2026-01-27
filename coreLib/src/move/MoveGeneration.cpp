@@ -19,7 +19,12 @@ namespace move {
 			return;
 		}
 
-		moves.push_back(Move::of(move::CastleType::KingSide));
+		moves.push_back(Move::of(
+			position.toMove == core::Color::White ? 4 : 60, 
+			position.toMove == core::Color::White ? 6 : 62, 
+			core::PieceType::King, core::PieceType::None, core::PieceType::None, 
+			move::CastleType::KingSide, false)
+		);
 	}
 
 	static void generate_queen_side_castle(core::Position& position, std::vector<uint32_t>& moves) {
@@ -33,7 +38,12 @@ namespace move {
 			return;
 		}
 
-		moves.push_back(Move::of(move::CastleType::KingSide));
+		moves.push_back(Move::of(
+			position.toMove == core::Color::White ? 4 : 60,
+			position.toMove == core::Color::White ? 2 : 58,
+			core::PieceType::King, core::PieceType::None, core::PieceType::None,
+			move::CastleType::QueenSide, false)
+		);
 	}
 
 	// Generates moves from a movement, given a piece type and a start square. 
@@ -62,8 +72,8 @@ namespace move {
 				capturedType = static_cast<core::PieceType>(pieceIndex);
 			}
 
-			if ((core::bit_board::EIGHTH_RANK & core::bit_board::square_to_bit_board(endSquare)) != 0) {
-				for (int p = 0; static_cast<int>(core::PieceType::N); p++) {
+			if ((position.toMove == core::Color::White ? core::bit_board::EIGHTH_RANK : core::bit_board::FIRST_RANK & core::bit_board::square_to_bit_board(endSquare))) {
+				for (int p = 0; p < static_cast<int>(core::PieceType::N); p++) {
 					moves.push_back(move::Move::of(startSquare, endSquare, capturedType, static_cast<core::PieceType>(p), false));
 					continue;
 				}

@@ -5,7 +5,7 @@
 
 namespace move {
 
-	static void apply_castle(core::Position& position, const uint32_t move) {
+	static void apply_queen_side_castle(core::Position& position, const uint32_t move) {
 
 		unsigned int kingStartIndex;
 		unsigned int kingEndIndex;
@@ -25,6 +25,34 @@ namespace move {
 			kingEndIndex =		core::bit_board::POST_B_Q_CASTLE_KING_INDEX;
 			rookStartIndex =	core::bit_board::PRE_B_Q_CASTLE_ROOK_INDEX;
 			rookEndIndex =		core::bit_board::POST_B_Q_CASTLE_ROOK_INDEX;
+			break;
+		default: kingStartIndex = 0; kingEndIndex = 0; rookStartIndex = 0; rookEndIndex = 0;
+		}
+
+		core::bit_board::move_bit(position.get_friendly_king_bit_board_ref(), kingStartIndex, kingEndIndex);
+		core::bit_board::move_bit(position.get_friendly_rook_bit_board_ref(), rookStartIndex, rookEndIndex);
+	}
+
+	static void apply_king_side_castle(core::Position& position, const uint32_t move) {
+
+		unsigned int kingStartIndex;
+		unsigned int kingEndIndex;
+		unsigned int rookStartIndex;
+		unsigned int rookEndIndex;
+
+		switch (position.toMove)
+		{
+		case core::Color::White:
+			kingStartIndex = core::bit_board::DEFAULT_W_KING_INDEX;
+			kingEndIndex = core::bit_board::POST_W_K_CASTLE_KING_INDEX;
+			rookStartIndex = core::bit_board::PRE_W_K_CASTLE_ROOK_INDEX;
+			rookEndIndex = core::bit_board::POST_W_K_CASTLE_ROOK_INDEX;
+			break;
+		case core::Color::Black:
+			kingStartIndex = core::bit_board::DEFAULT_B_KING_INDEX;
+			kingEndIndex = core::bit_board::POST_B_K_CASTLE_KING_INDEX;
+			rookStartIndex = core::bit_board::PRE_B_K_CASTLE_ROOK_INDEX;
+			rookEndIndex = core::bit_board::POST_B_K_CASTLE_ROOK_INDEX;
 			break;
 		default: kingStartIndex = 0; kingEndIndex = 0; rookStartIndex = 0; rookEndIndex = 0;
 		}
@@ -96,8 +124,13 @@ namespace move {
 
 	void apply_move(core::Position& position, const uint32_t move) {
 
-		if (move::decode::castle_type(move) != move::CastleType::None) {
-			apply_castle(position, move);
+		if (move::decode::castle_type(move) == move::CastleType::KingSide) {
+			apply_king_side_castle(position, move);
+			position.enPassantSquare = -1;
+		}
+
+		else if (move::decode::castle_type(move) == move::CastleType::QueenSide) {
+			apply_queen_side_castle(position, move);
 			position.enPassantSquare = -1;
 		}
 

@@ -103,7 +103,8 @@ namespace core {
 		int rook_diff();
 		int queen_diff();
 
-		bool is_king_attacked();
+		bool is_friendly_king_attacked();
+		bool is_enemy_king_attacked();
 		bool is_king_attacked(core::Color);
 
 		bool is_square_attacked(unsigned int squareIndex, core::Color attacking);

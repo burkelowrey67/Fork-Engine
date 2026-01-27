@@ -314,13 +314,17 @@ namespace core {
 		return num_queens(core::Color::White) - num_queens(core::Color::Black);
 	}
 
-	bool Position::is_king_attacked() {
+	bool Position::is_friendly_king_attacked() {
 		return Position::is_king_attacked(toMove);
 	}
 
+	bool Position::is_enemy_king_attacked() {
+		return Position::is_king_attacked(opposite_color(toMove));
+	}
+
 	bool Position::is_king_attacked(core::Color color) {
-		int kingSquare = std::countr_zero(Position::get_pawn_bit_board(color));
-		return is_square_attacked(kingSquare, color);
+		int kingSquare = std::countr_zero(Position::get_king_bit_board(color));
+		return is_square_attacked(kingSquare, opposite_color(color));
 	}
 
 	bool Position::is_square_attacked(unsigned int squareIndex, core::Color attacking) {
@@ -332,7 +336,7 @@ namespace core {
 
 			while (attackingPieces) {
 				int currentIndex = core::bit_board::get_first_square_index(attackingPieces);
-				core::PieceType pieceType = static_cast<core::PieceType>(piece);
+				core::PieceType pieceType = index_to_piece_type(piece);
 
 				uint64_t attackingMask;
 
