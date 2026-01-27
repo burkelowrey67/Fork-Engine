@@ -7,8 +7,11 @@
 
 namespace move::mask {
 
-	static uint64_t bishopLookups[64][512];
-	static uint64_t rookLookups[64][4096];
+	static uint64_t bishopLookups[64][2048];
+	static uint64_t rookLookups[64][16384];
+
+	static int bishopDirs[4][2] =	{ { 1, 1 }, { 1, -1 }, { -1, -1 }, { -1, 1 }};
+	static int rookDirs[4][2] =		{ { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
 
 	uint64_t lookup(core::PieceType pieceType, unsigned int squareIndex, uint64_t allPieces, uint64_t friendlyPieces) {
 		switch (pieceType) {
@@ -54,43 +57,83 @@ namespace move::mask {
 	}
 
 	static void remove_redundant_edge_bits(uint64_t bitBoard, unsigned int currentSquare, core::PieceType pieceType) {
+		uint64_t mask = core::bit_board::square_to_bit_board(currentSquare);
+
 		if (pieceType == core::PieceType::Rook) {
-			if (currentSquare & core::bit_board::FIRST_RANK) {
+			if (mask & core::bit_board::SW_CORNER || mask & core::bit_board::NE_CORNER) {
+				bitBoard &= ~(core::bit_board::NW_CORNER | core::bit_board::SE_CORNER);
+			}
+
+			else if (mask & core::bit_board::NW_CORNER || mask & core::bit_board::SE_CORNER) {
+				bitBoard &= ~(core::bit_board::SW_CORNER | core::bit_board::NE_CORNER);
+			}
+
+			else if (mask & core::bit_board::FIRST_RANK) {
 				bitBoard &= ~(
 					core::bit_board::EIGHTH_RANK	| 
-					core::bit_board::SW_CORNER		| 
-					core::bit_board::SE_CORNER
+					core::bit_board::A_FILE			|
+					core::bit_board::H_FILE
 					);
 			}
 
-			if (currentSquare & core::bit_board::EIGHTH_RANK) {
+			else if (mask & core::bit_board::EIGHTH_RANK) {
 				bitBoard &= ~(
 					core::bit_board::FIRST_RANK	| 
-					core::bit_board::NW_CORNER		| 
-					core::bit_board::NE_CORNER
+					core::bit_board::A_FILE		| 
+					core::bit_board::H_FILE
 					);
 			}
 
-			if (currentSquare & core::bit_board::A_FILE) {
+			else if (mask & core::bit_board::A_FILE) {
 				bitBoard &= ~(
 					core::bit_board::H_FILE		|
-					core::bit_board::NW_CORNER		|
-					core::bit_board::SW_CORNER
+					core::bit_board::FIRST_RANK |
+					core::bit_board::EIGHTH_RANK
 					);
 			}
 
-			if (currentSquare & core::bit_board::H_FILE) {
+			else if (mask & core::bit_board::H_FILE) {
 				bitBoard &= ~(
 					core::bit_board::A_FILE		| 
-					core::bit_board::NE_CORNER		| 
-					core::bit_board::SE_CORNER
+					core::bit_board::FIRST_RANK |
+					core::bit_board::EIGHTH_RANK
 					);
+			}
+
+			else bitBoard &= ~core::bit_board::EDGE_MASK;
+		}
+
+		else bitBoard &= ~core::bit_board::EDGE_MASK;
+	}
+
+	static uint64_t ray_cast(int squareIndex, core::PieceType pieceType, uint64_t blockers) {
+		uint64_t attacks = 0ULL;
+
+		int startFile = squareIndex & 0b111;
+		int startRank = squareIndex >> 3;
+
+		auto dirs = pieceType == core::PieceType::Bishop ? bishopDirs : rookDirs;
+
+		for (int i = 0; i < 4; i++) {
+			int file = startFile + dirs[i][0];
+			int rank = startRank + dirs[i][1];
+
+			// step in this direction
+			while (file >= 0 && file < 8 && rank >= 0 && rank < 8) {
+				int sq = (rank << 3) | file;
+				uint64_t bit = 1ULL << sq;
+
+				attacks |= bit;
+
+				// if ray must stop when encountering a blocker
+				if (blockers & bit) break;
+
+				file += dirs[i][0];
+				rank += dirs[i][1];
 			}
 		}
 
-		else {
-			bitBoard &= ~core::bit_board::EDGE_MASK;
-		}
+		return attacks;
 	}
 
 	template
@@ -107,13 +150,13 @@ namespace move::mask {
 
 			for (uint64_t blockerConfig : blockerConfigs) {
 				int lookupIndex = move::magic_numbers::get_lookup_index(blockerConfig, squareIndex, pieceType);
-				lookup[squareIndex][lookupIndex] = move::mask::get_mask(pieceType, squareIndex);
+				lookup[squareIndex][lookupIndex] = ray_cast(squareIndex, pieceType, blockerConfig);
 			}
 		}
 	}
 
 	void initialize_lookups() {
-		initialize_lookup<512>(core::PieceType::Bishop, bishopLookups);
-		initialize_lookup<4096>(core::PieceType::Rook, rookLookups);
+		initialize_lookup<2048>(core::PieceType::Bishop, bishopLookups);
+		initialize_lookup<16384>(core::PieceType::Rook, rookLookups);
 	}
 }
