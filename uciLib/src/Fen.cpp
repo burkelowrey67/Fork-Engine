@@ -108,6 +108,9 @@ namespace uci {
             return std::nullopt;
         }
 
+        position.update_lookup();
+        position.update_masks();
+
         return position;
 	}
 
